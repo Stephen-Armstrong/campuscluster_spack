@@ -22,11 +22,14 @@ class Hpic2deps(BundlePackage):
     
     version('main')
 
-
     depends_on('mpi')
-    depends_on('kokkos')
+    depends_on('kokkos@:3.8')
     depends_on('spdlog')
     depends_on('hypre')
     depends_on('googletest')
+    depends_on('hdf5+cxx+mpi')
+    depends_on('mfem~zlib')
+    depends_on('metis')
+    depends_on('cuda')
 
     # There is no need for install() since there is no code.
