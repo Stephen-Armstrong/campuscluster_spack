@@ -23,6 +23,7 @@ class Hpic2deps(BundlePackage):
     version('main')
 
     depends_on('mpi')
+    depends_on('cmake@3.19.8:')
     depends_on('kokkos@:3.8')
     depends_on('spdlog')
     depends_on('hypre')

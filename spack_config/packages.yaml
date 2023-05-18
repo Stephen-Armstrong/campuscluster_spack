@@ -61,8 +61,7 @@ packages:
     - spec: "mvapich2@2.3rc2%gcc@7.2.0"
       modules:
       - mvapich2/2.3rc2-gcc-7.2.0
-  cmake:
-    buildable: False
+  cmake: 
     externals:
     - spec: "cmake@3.18.4"
       modules:
