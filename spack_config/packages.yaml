@@ -7,7 +7,7 @@ packages:
       modules:
       - openmpi/4.1.0-gcc-7.2.0-pmi2
     - spec: "openmpi@4.1.0%gcc@7.2.0"
-      module:
+      modules:
       - openmpi/4.1.0-gcc-7.2.0
     - spec: "openmpi@4.0.5%intel@18.0"
       modules:

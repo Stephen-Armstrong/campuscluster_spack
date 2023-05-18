@@ -1,5 +1,6 @@
 modules:
   default:
+    enable: [tcl]
     tcl:
       #blacklist_implicits: true
       hash_length: 0
@@ -12,5 +13,7 @@ modules:
           set:
             '{name}_ROOT' : '{prefix}'
       projections:
-        hpic2deps: '{name}/{compiler.name}-{compiler.version}/{^mpi.name}-{^mpi.version}/kokkos{^kokkos.variants.openmp}{^kokkos.variants.pthread}-{^kokkos.variants.cuda_arch}/{^kokkos.variants.debug}'
+        # As of 5/18/2023, spack has a bug where it can't differentiate between cuda_archs in modulefiles. For now, only have cuda_arch=70.
+        #hpic2deps: '{name}/{compiler.name}-{compiler.version}/{^mpi.name}-{^mpi.version}/kokkos{^kokkos.variants.openmp}{^kokkos.variants.pthread}-{^kokkos.variants.cuda_arch}/{^kokkos.variants.debug}'
+        hpic2deps: '{name}/{compiler.name}-{compiler.version}/{^mpi.name}-{^mpi.version}/kokkos{^kokkos.variants.openmp}{^kokkos.variants.pthread}{^kokkos.variants.cuda}/{^kokkos.variants.debug}'
         all: '{name}/{/hash}'
