@@ -9,4 +9,7 @@ echo "- $PWD/lcpp-spack-repo" >> ../spack/etc/spack/repos.yaml
 # Remove user-level compiler list. They are almost definitely broken.
 rm ~/.spack/linux/compilers.yaml
 sh install_hpic2deps.sh
+spack module tcl refresh --delete-tree -y
+. ../spack/share/spack/setup-env.sh
+module refresh
 
