@@ -10,6 +10,16 @@ compilers:
     target: x86_64
     operating_system: centos7
 - compiler:
+    modules: [gcc/8.2.0]
+    paths:
+      cc: /usr/local/gcc/8.2.0/bin/gcc
+      cxx: /usr/local/gcc/8.2.0/bin/g++
+      f77: /usr/local/gcc/8.2.0/bin/gfortran
+      fc: /usr/local/gcc/8.2.0/bin/gfortran
+    spec: gcc@=8.2.0
+    target: x86_64
+    operating_system: centos7
+- compiler:
     modules: [intel/18.0]
     paths:
       cc: /usr/local/intel/parallel_studio_xe_2018/compilers_and_libraries_2018.1.163/linux/bin/intel64/icc
@@ -27,6 +37,16 @@ compilers:
       f77: /usr/local/gcc/7.2.0/bin/gfortran
       fc: /usr/local/gcc/7.2.0/bin/gfortran
     spec: gcc@=7.2.0
+    target: x86_64
+    operating_system: rhel7
+- compiler:
+    modules: [gcc/8.2.0]
+    paths:
+      cc: /usr/local/gcc/8.2.0/bin/gcc
+      cxx: /usr/local/gcc/8.2.0/bin/g++
+      f77: /usr/local/gcc/8.2.0/bin/gfortran
+      fc: /usr/local/gcc/8.2.0/bin/gfortran
+    spec: gcc@=8.2.0
     target: x86_64
     operating_system: rhel7
 - compiler:
