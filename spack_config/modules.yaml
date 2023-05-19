@@ -5,10 +5,24 @@ modules:
       #blacklist_implicits: true
       hash_length: 0
       hpic2deps:
-        autoload: 'direct'
+        autoload: 'all'
+        # No way to just load the correct gcc module, so do everything that it would do by hand.
+        conflict:
+          - 'gcc'
+        environment:
+          prepend_path:
+            LD_LIBRARY_PATH: '/usr/local/gcc/8.2.0/lib/gcc/x86_64-pc-linux-gnu/8.2.0:/usr/local/gcc/8.2.0/lib64:/usr/local/gcc/8.2.0/lib'
+            LIBRARY_PATH: '/usr/local/gcc/8.2.0/lib64:/usr/local/gcc/8.2.0/lib'
+            MANPATH: '/usr/local/gcc/8.2.0/share/man'
+            PATH: '/usr/local/gcc/8.2.0/bin'
+          append_path:
+            LD_LIBRARY_PATH: '/usr/local/mpc/1.0.3/lib:/usr/local/mpfr/3.1.4/lib:/usr/local/gmp/6.1.0/lib:/usr/local/isl/0.18/lib'
+          set:
+            CC: 'gcc'
+            F95: 'gfortran'
       all:
         conflict:
-        - '{name}'
+          - '{name}'
         environment:
           set:
             '{name}_ROOT' : '{prefix}'
