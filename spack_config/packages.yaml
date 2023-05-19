@@ -3,6 +3,9 @@ packages:
     buildable: False
   openmpi:
     externals:
+    - spec: "openmpi@4.1.4%gcc@8.2.0"
+      modules:
+      - openmpi/4.1.4-gcc-8.2.0
     - spec: "openmpi@4.1.0%gcc@7.2.0+pmi"
       modules:
       - openmpi/4.1.0-gcc-7.2.0-pmi2
@@ -117,6 +120,18 @@ packages:
     - spec: "cuda@10.0.130"
       modules:
       - cuda/10.0
+    - spec: "cuda@10.2.89"
+      modules:
+      - cuda/.10.2
+    - spec: "cuda@11.1.1"
+      modules:
+      - cuda/.11.1
+    - spec: "cuda@11.6.2"
+      modules:
+      - cuda/.11.6
+    - spec: "cuda@11.7.1"
+      modules:
+      - cuda/.11.7
     - spec: "cuda@9.2.88"
       modules:
       - cuda/9.2
@@ -149,6 +164,15 @@ packages:
     - spec: "fftw@3.3.8%gcc@7.2.0 +mpi ^mvapich2@2.3"
       modules:
       - fftw-3.3.8/gcc-7.2.0/mvapich2-2.3
+  gcc:
+    buildable: False
+    externals:
+    - spec: gcc@=7.2.0
+      modules:
+      - gcc/7.2.0
+    - spec: gcc@=8.2.0
+      modules:
+      - gcc/8.2.0
   #git: version mismatch
   gsl:
     buildable: False
@@ -186,15 +210,6 @@ packages:
       modules:
       - mpfr/3.1.4
   #nano: version mismatch
-  openblas: 
-    buildable: False
-    externals:
-    - spec: "openblas@0.3.7%gcc@7.2.0"
-      modules:
-      - openblas/0.3.7
-    - spec: "openblas@0.3.7%intel@18.0"
-      modules:
-      - openblas/0.3.7-i
   p7zip:
     buildable: False
     externals:
