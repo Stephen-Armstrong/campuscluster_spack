@@ -27,7 +27,7 @@ modules:
           set:
             '{name}_ROOT' : '{prefix}'
       projections:
-        # As of 5/18/2023, spack has a bug where it can't differentiate between cuda_archs in modulefiles. For now, only have cuda_arch=70.
-        #hpic2deps: '{name}/{compiler.name}-{compiler.version}/{^mpi.name}-{^mpi.version}/kokkos{^kokkos.variants.openmp}{^kokkos.variants.pthread}-{^kokkos.variants.cuda_arch}/{^kokkos.variants.debug}'
-        hpic2deps: '{name}/{compiler.name}-{compiler.version}/{^mpi.name}-{^mpi.version}/kokkos{^kokkos.variants.openmp}{^kokkos.variants.pthread}{^kokkos.variants.cuda}/{^kokkos.variants.debug}'
+        # As of 5/18/2023, spack has a bug where it can't differentiate between cuda_archs in modulefiles.
+        #hpic2deps: '{name}/{compiler.name}-{compiler.version}/{^mpi.name}-{^mpi.version}/kokkos{^kokkos.variants.openmp}{^kokkos.variants.threads}-{^kokkos.variants.cuda_arch}/{^kokkos.variants.debug}'
+        hpic2deps: '{name}/{compiler.name}-{compiler.version}/{^mpi.name}-{^mpi.version}/kokkos{^kokkos.variants.openmp}{^kokkos.variants.threads}{^kokkos.variants.cuda}/{^kokkos.variants.debug}/{/hash:7}'
         all: '{name}/{/hash}'
