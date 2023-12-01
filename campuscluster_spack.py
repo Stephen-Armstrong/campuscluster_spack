@@ -246,8 +246,8 @@ setenv HDF5_ROOT {{{build_dir_path}/hdf5_dev/install}}
             modulefile_dir = f"{top_level_dir}/modulefiles/hpic2deps/{option_spec_string}/{build_type}"
             if not os.path.exists(modulefile_dir):
                 os.makedirs(modulefile_dir)
-            # with open(f"{modulefile_dir}/{current_datetime}", 'w') as modulefile:
-            #     modulefile.write(modulefile_contents)
+            with open(f"{modulefile_dir}/{current_datetime}", 'w') as modulefile:
+                modulefile.write(modulefile_contents)
 
             # Update the "latest" modulefiles
             if os.path.exists(f"{modulefile_dir}/latest"):
