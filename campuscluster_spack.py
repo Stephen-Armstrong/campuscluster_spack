@@ -344,28 +344,28 @@ prepend-path --delim {{:}} PATH {{{top_level_dir}/builds/{dir_name}/build}}
         if os.path.exists(f"{modulefile_dir}/latest"):
             os.unlink(f"{modulefile_dir}/latest")
 
-            # Delete old builds, if necessary.
-            old_builds = glob.glob(f"{top_level_dir}/builds/hpic2-{option_spec_string}-*")
-            # The date string is always 10 chars long
-            build_dates = [old_build[-10:] for old_build in old_builds]
-            # Convert date strings to datetime objects, for comparisons
-            build_dates = np.array([datetime.strptime(build_date, datetime_format) for build_date in build_dates])
-            sorted_build_date_indices = np.argsort(build_dates)
-            for old_build_index in sorted_build_date_indices[:-num_versions_kept]:
-                old_build = old_builds[old_build_index]
-                shutil.rmtree(old_build)
+        # Delete old builds, if necessary.
+        old_builds = glob.glob(f"{top_level_dir}/builds/hpic2-{option_spec_string}-*")
+        # The date string is always 10 chars long
+        build_dates = [old_build[-10:] for old_build in old_builds]
+        # Convert date strings to datetime objects, for comparisons
+        build_dates = np.array([datetime.strptime(build_date, datetime_format) for build_date in build_dates])
+        sorted_build_date_indices = np.argsort(build_dates)
+        for old_build_index in sorted_build_date_indices[:-num_versions_kept]:
+            old_build = old_builds[old_build_index]
+            shutil.rmtree(old_build)
 
-            # Delete old modulefiles, if necessary.
-            old_mfs = glob.glob(f"{modulefile_dir}/*")
-            # The modulefile names are their build dates.
-            # Convert date strings to datetime objects, for comparisons.
-            build_dates = np.array([datetime.strptime(build_date, datetime_format) for build_date in old_mfs])
-            sorted_build_date_indices = np.argsort(build_dates)
-            for old_mf_index in sorted_build_date_indices[:-num_versions_kept]:
-                old_mf = old_mfs[old_mf_index]
-                os.remove(old_mf)
+        # Delete old modulefiles, if necessary.
+        old_mfs = glob.glob(f"{modulefile_dir}/*")
+        # The modulefile names are their build dates.
+        # Convert date strings to datetime objects, for comparisons.
+        build_dates = np.array([datetime.strptime(build_date, datetime_format) for build_date in old_mfs])
+        sorted_build_date_indices = np.argsort(build_dates)
+        for old_mf_index in sorted_build_date_indices[:-num_versions_kept]:
+            old_mf = old_mfs[old_mf_index]
+            os.remove(old_mf)
 
-            # Update the "latest" modulefile
+        # Update the "latest" modulefile
         os.link(f"{modulefile_dir}/{current_datetime}", f"{modulefile_dir}/latest")
 
 if __name__ == "__main__":
