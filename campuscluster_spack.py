@@ -75,7 +75,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
             if build_type == "Debug":
                 kokkos_cmake_cmd += " -DKokkos_ENABLE_DEBUG=ON -DKokkos_ENABLE_DEBUG_BOUNDS_CHECK=ON -DKokkos_ENABLE_DEBUG_DUALVIEW_MODIFY_CHECK=ON"
             if cuda_enabled:
-                kokkos_cmake_cmd += f" -DKokkos_ENABLE_CUDA=ON -DKokkos_CUDA_LAMBDA=ON"
+                kokkos_cmake_cmd += f" -DKokkos_ENABLE_CUDA=ON -DKokkos_ENABLE_CUDA_LAMBDA=ON"
                 if cuda_arch_option==70 or cuda_arch_option==72:
                     kokkos_cmake_cmd += f" -DKokkos_ARCH_VOLTA{cuda_arch_option}=ON"
                 elif cuda_arch_option==80 or cuda_arch_option==86:
