@@ -167,7 +167,7 @@ cd ../..
 # install rustbca
 git clone git@github.com:lcpp-org/RustBCA.git
 cd RustBCA
-cargo build --release --lib
+cargo build --release --lib -j {num_build_cores}
 mkdir include && cd include
 ln -s ../RustBCA.h .
 cd ..
