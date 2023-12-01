@@ -105,7 +105,7 @@ mkdir multirust
 # rather than in home directory
 export CARGO_HOME=$PWD/cargo
 export RUSTUP_HOME=$PWD/multirust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 source $CARGO_HOME/env
 
 # install hypre
