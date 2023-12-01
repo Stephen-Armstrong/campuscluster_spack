@@ -199,6 +199,11 @@ proc ModulesHelp {{ }} {{
     puts stderr {{Name   : hpic2deps}}
 }}
 
+conflict hpic2deps
+conflict cmake
+conflict gcc
+conflict openmpi
+conflict cuda
 if {{![info exists ::env(LMOD_VERSION_MAJOR)]}} {{
     module load {mpi_module}
     module load {compiler_module}
@@ -212,11 +217,6 @@ if {{![info exists ::env(LMOD_VERSION_MAJOR)]}} {{
     depends-on {python_module}
     {'depends-on ' + cuda_module if cuda_enabled else ''}
 }}
-conflict hpic2deps
-conflict cmake
-conflict gcc
-conflict openmpi
-conflict cuda
 
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/hypre_dev/hypre/src/hypre/.}}
 setenv HYPRE_ROOT {{{build_dir_path}/hypre_dev/hypre/src/hypre}}
