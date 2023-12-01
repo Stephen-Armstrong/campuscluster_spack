@@ -264,7 +264,7 @@ setenv HDF5_ROOT {{{build_dir_path}/hdf5_dev/install}}
             # The date string is always 10 chars long
             build_dates = [old_build[-10:] for old_build in old_builds]
             # Convert date strings to datetime objects, for comparisons
-            build_dates = np.array([datetime.strptime(build_date, datetime_format) for build_date in build_dates])
+            build_dates = np.array([datetime.datetime.strptime(build_date, datetime_format) for build_date in build_dates])
             sorted_build_date_indices = np.argsort(build_dates)
             for old_build_index in sorted_build_date_indices[:-num_versions_kept]:
                 old_build = old_builds[old_build_index]
@@ -274,7 +274,7 @@ setenv HDF5_ROOT {{{build_dir_path}/hdf5_dev/install}}
             old_mfs = glob.glob(f"{modulefile_dir}/*")
             # The modulefile names are their build dates.
             # Convert date strings to datetime objects, for comparisons.
-            build_dates = np.array([datetime.strptime(build_date, datetime_format) for build_date in old_mfs])
+            build_dates = np.array([datetime.datetime.strptime(build_date, datetime_format) for build_date in old_mfs])
             sorted_build_date_indices = np.argsort(build_dates)
             for old_mf_index in sorted_build_date_indices[:-num_versions_kept]:
                 old_mf = old_mfs[old_mf_index]
@@ -349,7 +349,7 @@ prepend-path --delim {{:}} PATH {{{top_level_dir}/builds/{dir_name}/build}}
         # The date string is always 10 chars long
         build_dates = [old_build[-10:] for old_build in old_builds]
         # Convert date strings to datetime objects, for comparisons
-        build_dates = np.array([datetime.strptime(build_date, datetime_format) for build_date in build_dates])
+        build_dates = np.array([datetime.datetime.strptime(build_date, datetime_format) for build_date in build_dates])
         sorted_build_date_indices = np.argsort(build_dates)
         for old_build_index in sorted_build_date_indices[:-num_versions_kept]:
             old_build = old_builds[old_build_index]
@@ -359,7 +359,7 @@ prepend-path --delim {{:}} PATH {{{top_level_dir}/builds/{dir_name}/build}}
         old_mfs = glob.glob(f"{modulefile_dir}/*")
         # The modulefile names are their build dates.
         # Convert date strings to datetime objects, for comparisons.
-        build_dates = np.array([datetime.strptime(build_date, datetime_format) for build_date in old_mfs])
+        build_dates = np.array([datetime.datetime.strptime(build_date, datetime_format) for build_date in old_mfs])
         sorted_build_date_indices = np.argsort(build_dates)
         for old_mf_index in sorted_build_date_indices[:-num_versions_kept]:
             old_mf = old_mfs[old_mf_index]
