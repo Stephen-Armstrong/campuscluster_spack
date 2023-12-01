@@ -268,6 +268,8 @@ setenv HDF5_ROOT {{{build_dir_path}/hdf5_dev/install}}
 module purge
 module use {top_level_dir}/modulefiles
 module load {deps_module}
+module list
+module show {deps_module}
 
 cd builds
 mkdir {dir_name}
