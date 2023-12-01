@@ -190,7 +190,7 @@ make install
 cd ../..
             """
 
-            # subprocess.run(build_script, shell=True)
+            subprocess.run(build_script, shell=True)
 
             build_dir_path = f"{top_level_dir}/builds/{dir_name}"
 
@@ -228,7 +228,7 @@ setenv HYPRE_ROOT {{{build_dir_path}/hypre_dev/hypre/src/hypre}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/spdlog_dev/install/.}}
 prepend-path --delim {{:}} PATH {{{build_dir_path}/kokkos_dev/install/bin}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/kokkos_dev/install/.}}
-setenv Kokkos_ROOT {{{build_dir_path}/kokkos_dev/install}}
+setenv KOKKOS_ROOT {{{build_dir_path}/kokkos_dev/install}}
 prepend-path --delim {{:}} PATH {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install/bin}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install/.}}
 setenv METIS_ROOT {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install}}
@@ -268,8 +268,6 @@ setenv HDF5_ROOT {{{build_dir_path}/hdf5_dev/install}}
 module purge
 module use {top_level_dir}/modulefiles
 module load {deps_module}
-module list
-module show {deps_module}
 
 cd builds
 mkdir {dir_name}
