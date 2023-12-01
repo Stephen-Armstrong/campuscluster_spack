@@ -249,6 +249,11 @@ setenv HDF5_ROOT {{{build_dir_path}/hdf5_dev/install}}
             with open(f"{modulefile_dir}/{current_datetime}", 'w') as modulefile:
                 modulefile.write(modulefile_contents)
 
+            # Update the "latest" modulefiles
+            if os.path.exists(f"{modulefile_dir}/latest"):
+                os.unlink(f"{modulefile_dir}/latest")
+            os.link(f"{modulefile_dir}/{current_datetime}", f"{modulefile_dir}/latest")
+
 if __name__ == "__main__":
     if "update" in sys.argv:
         update()
