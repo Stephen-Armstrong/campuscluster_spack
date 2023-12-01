@@ -48,7 +48,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
     # This is mostly because only one combo works on ICC at a time...
     compiler_module = "gcc/8.2.0"
     mpi_module = "openmpi/4.1.4-gcc-8.2.0"
-    cuda_module = "cuda/10.0"
+    cuda_module = "cuda/11.6"
     cmake_module = f"{top_level_dir}/modulefiles/cmake"
     python_module = "anaconda/3"
 
