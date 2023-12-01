@@ -50,6 +50,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
     mpi_module = "openmpi/4.1.4-gcc-8.2.0"
     cuda_module = "cuda/10.0"
     cmake_module = f"{top_level_dir}/modulefiles/cmake"
+    python_module = "anaconda/3"
 
     # ICC currently restricts compiling to a certain number of cores
     num_build_cores = 4
@@ -158,7 +159,7 @@ cd ../..
 mkdir pumiMBBL_dev && cd pumiMBBL_dev
 git clone git@github.com:SCOREC/pumiMBBL.git
 mkdir build && cd build
-cmake ../pumiMBBL -DCMAKE_INSTALL_PREFIX=../install -DKokkos_ROOT=../../kokkos_dev/build/install -DCMAKE_BUILD_TYPE={build_type}
+cmake ../pumiMBBL -DCMAKE_INSTALL_PREFIX=../install -DKokkos_ROOT=../../kokkos_dev/install -DCMAKE_BUILD_TYPE={build_type}
 make -j{num_build_cores}
 make install
 cd ../..
@@ -202,11 +203,13 @@ if {{![info exists ::env(LMOD_VERSION_MAJOR)]}} {{
     module load {mpi_module}
     module load {compiler_module}
     module load {cmake_module}
+    module load {python_module}
     {'module load ' + cuda_module if cuda_enabled else ''}
 }} else {{
     depends-on {mpi_module}
     depends-on {compiler_module}
     depends-on {cmake_module}
+    depends-on {python_module}
     {'depends-on ' + cuda_module if cuda_enabled else ''}
 }}
 conflict hpic2deps
@@ -221,13 +224,13 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/spdlog_dev/insta
 prepend-path --delim {{:}} PATH {{{build_dir_path}/kokkos_dev/install/bin}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/kokkos_dev/install/.}}
 setenv KOKKOS_ROOT {{{build_dir_path}/kokkos_dev/install}}
-prepend-path --delim {{:}} PATH {{{build_dir_path}/metis-5.1.0/install/bin}}
-prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/metis-5.1.0/install/.}}
-setenv METIS_ROOT {{{build_dir_path}/metis-5.1.0/install}}
+prepend-path --delim {{:}} PATH {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install/bin}}
+prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install/.}}
+setenv METIS_ROOT {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/mfem_dev/install/.}}
 setenv MFEM_ROOT {{{build_dir_path}/mfem_dev/install}}
 setenv PUMIMBBL_ROOT {{{build_dir_path}/pumiMBBL_dev/install}}
-setenv RUSTBCA_ROOT {{{build_dir_path}/RustBCA/install}}
+setenv RUSTBCA_ROOT {{{build_dir_path}/RustBCA}}
 prepend-path --delim {{:}} PATH {{{build_dir_path}/hdf5_dev/install/bin}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/hdf5_dev/install/.}}
 append-path --delim {{:}} LD_LIBRARY_PATH {{{build_dir_path}/hdf5_dev/install/lib}}
