@@ -68,6 +68,11 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
         for build_type in ("Debug", "Release"):
             dir_name = f"hpic2deps-{option_spec_string}-{build_type}-{current_datetime}"
 
+            # Remove the build directories for this datetime if it already
+            # exists, i.e. if we have already updated today.
+            if os.path.exists(f"builds/{dir_name}"):
+                shutil.rmtree(f"builds/{dir_name}")
+
             cuda_enabled = cuda_arch_option != None
             # May want to enable Broadwell optimizations, but not sure
             # if that can be used on all of ICC.
