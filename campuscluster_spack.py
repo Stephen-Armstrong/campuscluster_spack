@@ -17,8 +17,8 @@ def update():
         cmake_build_script = f"""
 mkdir cmake && cd cmake
 mkdir install
-wget https://github.com/Kitware/CMake/releases/download/v3.27.9/cmake-3.27.9-linux-x86_64.sh
-sh cmake-3.27.9-linux-x86_64.sh --skip-license --exclude-subdir --prefix=install
+wget https://github.com/Kitware/CMake/releases/download/v3.26.3/cmake-3.26.3-linux-x86_64.sh
+sh cmake-3.26.3-linux-x86_64.sh --skip-license --exclude-subdir --prefix=install
 cd ..
         """
         subprocess.run(cmake_build_script, shell=True)
