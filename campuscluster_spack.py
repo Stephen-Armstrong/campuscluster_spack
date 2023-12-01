@@ -368,6 +368,33 @@ prepend-path --delim {{:}} PATH {{{top_level_dir}/builds/{dir_name}/build}}
         # Update the "latest" modulefile
         os.link(f"{modulefile_dir}/{current_datetime}", f"{modulefile_dir}/latest")
 
+    print(f"""
+Done! If you haven't already, update your module search path with
+
+module use {top_level_dir}/modulefiles
+    """)
+
 if __name__ == "__main__":
-    if "update" in sys.argv:
+    help_message = f"""
+Hi! This is a script to update hpic2 and dependencies on ICC.
+
+You probably wanna
+
+module purge
+module load anaconda/3
+
+before using this. This script will build the most recent versions of hpic2
+and its dependencies, creating modulefiles for all of them, and deleting old
+versions. Currently, you can update once per day; if you run this more than once
+in a day, it will delete the builds from earlier in the day and proceed with
+a fresh build. You may run this for the first time in an empty directory.
+Afterward, update by running from inside the same directory.
+Usage:
+
+python3 {os.path.basename(__file__)} update
+    """
+
+    if len(sys.argv) == 2 and sys.argv[1] == "update":
         update()
+    else:
+        print(help_message)
