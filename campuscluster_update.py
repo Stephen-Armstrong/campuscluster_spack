@@ -150,7 +150,7 @@ make install
 cd ../..
 
 # install metis 5
-wget http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/metis-5.1.0.tar.gz
+wget https://github.com/mfem/tpls/raw/gh-pages/metis-5.1.0.tar.gz
 tar -xvf metis-5.1.0.tar.gz
 cd metis-5.1.0
 make config prefix=install
