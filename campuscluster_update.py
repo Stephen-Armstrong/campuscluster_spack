@@ -129,7 +129,7 @@ cd hypre/src
 ./configure
 make -j{num_build_cores}
 make install
-cd ../../..
+cd {top_level_dir}/builds/{dir_name}
 
 # install spdlog
 mkdir spdlog_dev && cd spdlog_dev
@@ -138,7 +138,7 @@ mkdir build && cd build
 cmake ../spdlog -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type}
 make -j{num_build_cores}
 make install
-cd ../..
+cd {top_level_dir}/builds/{dir_name}
 
 # install kokkos
 mkdir kokkos_dev && cd kokkos_dev
@@ -147,7 +147,7 @@ mkdir build && cd build
 {kokkos_cmake_cmd}
 make -j{num_build_cores}
 make install
-cd ../..
+cd {top_level_dir}/builds/{dir_name}
 
 # install metis 5
 wget https://github.com/mfem/tpls/raw/gh-pages/metis-5.1.0.tar.gz
@@ -156,7 +156,7 @@ cd metis-5.1.0
 make config prefix=install
 make -j{num_build_cores}
 make install
-cd ..
+cd {top_level_dir}/builds/{dir_name}
 
 # install mfem
 mkdir mfem_dev && cd mfem_dev
@@ -165,7 +165,7 @@ mkdir build && cd build
 {mfem_cmake_cmd}
 make -j{num_build_cores}
 make install
-cd ../..
+cd {top_level_dir}/builds/{dir_name}
 
 # install pumimbbl
 mkdir pumiMBBL_dev && cd pumiMBBL_dev
@@ -174,7 +174,7 @@ mkdir build && cd build
 cmake ../pumiMBBL -DCMAKE_INSTALL_PREFIX=../install -DKokkos_ROOT=../../kokkos_dev/install -DCMAKE_BUILD_TYPE={build_type}
 make -j{num_build_cores}
 make install
-cd ../..
+cd {top_level_dir}/builds/{dir_name}
 
 # install rustbca
 git clone git@github.com:lcpp-org/RustBCA.git
@@ -185,7 +185,7 @@ ln -s ../RustBCA.h .
 cd ..
 mkdir lib && cd lib
 ln -s ../target/release/liblibRustBCA.so .
-cd ../..
+cd {top_level_dir}/builds/{dir_name}
 
 # install hdf5
 mkdir hdf5_dev && cd hdf5_dev
@@ -194,7 +194,7 @@ mkdir build && cd build
 cmake ../hdf5 -DCMAKE_BUILD_TYPE={build_type} -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_ENABLE_PARALLEL=ON -DHDF5_BUILD_CPP_LIB=ON -DALLOW_UNSUPPORTED=ON -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
 make -j{num_build_cores}
 make install
-cd ../..
+cd {top_level_dir}/builds/{dir_name}
             """
 
             subprocess.run(build_script, shell=True)
