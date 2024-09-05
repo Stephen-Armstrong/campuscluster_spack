@@ -8,6 +8,12 @@ mkdir share && cd share
 git clone git@github.com:logantm2/campuscluster_spack.git
 cd campuscluster_spack
 . setup.sh
+
+Actually:
+mkdir share && cd share
+git clone git@github.com:logantm2/campuscluster_spack.git
+cd campuscluster_spack
+python3 campuscluster_update.py update
 ```
 This will download Spack and then use Spack to install a bunch of packages,
 which are then added to the module list.
