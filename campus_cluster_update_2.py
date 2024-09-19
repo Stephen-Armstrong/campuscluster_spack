@@ -70,8 +70,6 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
         with open(f"{top_level_dir}/modulefiles/cmake", 'w') as cmake_modulefile:
             cmake_modulefile.write(cmake_modulefile_contents)
     
-    return True
-    
     current_datetime = datetime.datetime.now()
     datetime_format = '%Y-%m-%d'
     datetime_format_length = 10
@@ -159,7 +157,9 @@ make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
 """
+    subprocess.run(build_once_script, shell=True)
     
+    return True
     
     for openmp_option, cuda_arch_option in itertools.product(openmp_options, cuda_arch_options):
         option_spec_string = f"{'+' if openmp_option else '~'}openmp-cuda-arch-{str(cuda_arch_option)}"
