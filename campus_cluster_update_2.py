@@ -264,11 +264,23 @@ if {{![info exists ::env(LMOD_VERSION_MAJOR)]}} {{
 }}
 
 
+prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/hypre_dev/hypre/src/hypre/.}}
+setenv HYPRE_ROOT {{{build_once_dir_path}/hypre_dev/hypre/src/hypre}}
+prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/spdlog_dev/install/.}}
 prepend-path --delim {{:}} PATH {{{build_dependent_dir_path}/kokkos_dev/install/bin}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/kokkos_dev/install/.}}
 setenv KOKKOS_ROOT {{{build_dependent_dir_path}/kokkos_dev/install}}
+prepend-path --delim {{:}} PATH {{{build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install/bin}}
+prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install/.}}
+setenv METIS_ROOT {{{build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/mfem_dev/install/.}}
 setenv MFEM_ROOT {{{build_dependent_dir_path}/mfem_dev/install}}
+setenv PUMIMBBL_ROOT {{{build_once_dir_path}/pumiMBBL_dev/install}}
+setenv RUSTBCA_ROOT {{{build_once_dir_path}/RustBCA}}
+prepend-path --delim {{:}} PATH {{{build_once_dir_path}/hdf5_dev/install/bin}}
+prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/hdf5_dev/install/.}}
+append-path --delim {{:}} LD_LIBRARY_PATH {{{build_once_dir_path}/hdf5_dev/install/lib}}
+setenv HDF5_ROOT {{{build_once_dir_path}/hdf5_dev/install}}
 
             """
             
