@@ -156,24 +156,6 @@ cmake ../hdf5 -DCMAKE_BUILD_TYPE={build_type} -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_E
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
-
-module load {mpi_module}
-module load {compiler_module}
-module load {cmake_module}
-module load {python_module}
-
-prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/hypre_dev/hypre/src/hypre/.}}
-setenv HYPRE_ROOT {{{build_once_dir_path}/hypre_dev/hypre/src/hypre}}
-prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/spdlog_dev/install/.}}
-prepend-path --delim {{:}} PATH {{{build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install/bin}}
-prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install/.}}
-setenv METIS_ROOT {{{build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install}}
-setenv PUMIMBBL_ROOT {{{build_once_dir_path}/pumiMBBL_dev/install}}
-setenv RUSTBCA_ROOT {{{build_once_dir_path}/RustBCA}}
-prepend-path --delim {{:}} PATH {{{build_once_dir_path}/hdf5_dev/install/bin}}
-prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/hdf5_dev/install/.}}
-append-path --delim {{:}} LD_LIBRARY_PATH {{{build_once_dir_path}/hdf5_dev/install/lib}}
-setenv HDF5_ROOT {{{build_once_dir_path}/hdf5_dev/install}}
 """
     subprocess.run(build_once_script, shell=True)
     
@@ -218,6 +200,9 @@ module load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_e
             subprocess.run(module_load_script, shell=True)
             
             build_dependent_script_kokkos = f"""
+module purge
+module use {top_level_dir}/modulefiles
+module load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
 cd builds
 mkdir {dir_name}
 cd {dir_name}
@@ -232,6 +217,10 @@ make install
 cd {top_level_dir}/builds/{dir_name}
 """
             build_dependent_script_mfem = f"""
+module purge
+module use {top_level_dir}/modulefiles
+module load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
+
 cd {top_level_dir}/builds/{dir_name}
 # install mfem
 mkdir mfem_dev && cd mfem_dev
