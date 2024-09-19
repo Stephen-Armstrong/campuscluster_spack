@@ -230,7 +230,7 @@ cd {top_level_dir}/builds/{dir_name}
             subprocess.run(build_dependent_script_kokkos, shell=True)
             
             subprocess.run(build_dependent_script_mfem, shell=True)
-            return False
+            
             
             build_dependent_dir_path = f"{top_level_dir}/builds/{dir_name}"
 
