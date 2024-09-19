@@ -157,18 +157,11 @@ make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
 
+module load {mpi_module}
+module load {compiler_module}
+module load {cmake_module}
+module load {python_module}
 
-if {{![info exists ::env(LMOD_VERSION_MAJOR)]}} {{
-    module load {mpi_module}
-    module load {compiler_module}
-    module load {cmake_module}
-    module load {python_module}
-}} else {{
-    depends-on {mpi_module}
-    depends-on {compiler_module}
-    depends-on {cmake_module}
-    depends-on {python_module}
-}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/hypre_dev/hypre/src/hypre/.}}
 setenv HYPRE_ROOT {{{build_once_dir_path}/hypre_dev/hypre/src/hypre}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/spdlog_dev/install/.}}
