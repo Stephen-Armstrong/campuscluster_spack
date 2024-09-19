@@ -159,8 +159,6 @@ cd {top_level_dir}/builds/{dir_name}
 """
     subprocess.run(build_once_script, shell=True)
     
-    return True
-    
     for openmp_option, cuda_arch_option in itertools.product(openmp_options, cuda_arch_options):
         option_spec_string = f"{'+' if openmp_option else '~'}openmp-cuda-arch-{str(cuda_arch_option)}"
         # Want to build both Debug and Release versions of hpic2deps,
