@@ -199,7 +199,7 @@ module load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_e
 """
             subprocess.run(module_load_script, shell=True)
             
-            build_dependent_script = f"""
+            build_dependent_script_kokkos = f"""
 cd builds
 mkdir {dir_name}
 cd {dir_name}
@@ -212,7 +212,8 @@ mkdir build && cd build
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
-
+"""
+            build_dependent_script_mfem = f"""
 # install mfem
 mkdir mfem_dev && cd mfem_dev
 git clone https://github.com/mfem/mfem.git #git@github.com:mfem/mfem.git
@@ -224,7 +225,8 @@ cd {top_level_dir}/builds/{dir_name}
 
 """
 
-            subprocess.run(build_dependent_script, shell=True)
+            subprocess.run(build_dependent_script_kokkos, shell=True)
+            subprocess.run(build_dependent_script_mfem, shell=True)
 
             build_dependent_dir_path = f"{top_level_dir}/builds/{dir_name}"
 
