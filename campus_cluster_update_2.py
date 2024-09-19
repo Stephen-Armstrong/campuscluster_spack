@@ -26,11 +26,11 @@ python_module = "anaconda/3"
 num_build_cores = 4
 
 # Delete old versions of builds if the number exceeds this
-num_versions_kept = 3
+num_versions_kept = 1
 
 #OpenMP and CUDA options
 openmp_options = [True]#, False]
-cuda_arch_options = [None]#, 70, 86]
+cuda_arch_options = [None, 70, 86]
 
 def update():
     if not os.path.isdir("builds"):
