@@ -200,6 +200,10 @@ module load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_e
             subprocess.run(module_load_script, shell=True)
             
             build_dependent_script = f"""
+cd builds
+mkdir {dir_name}
+cd {dir_name}
+
 # install kokkos
 mkdir kokkos_dev && cd kokkos_dev
 git clone https://github.com/kokkos/kokkos.git #git@github.com:kokkos/kokkos.git
