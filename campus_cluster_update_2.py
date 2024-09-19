@@ -128,15 +128,6 @@ make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
 
-# install pumimbbl
-mkdir pumiMBBL_dev && cd pumiMBBL_dev
-git clone https://github.com/SCOREC/pumiMBBL.git #git@github.com:SCOREC/pumiMBBL.git
-mkdir build && cd build
-cmake ../pumiMBBL -DCMAKE_INSTALL_PREFIX=../install -DKokkos_ROOT=../../kokkos_dev/install -DCMAKE_BUILD_TYPE={build_type}
-make -j{num_build_cores}
-make install
-cd {top_level_dir}/builds/{dir_name}
-
 # install rustbca
 git clone https://github.com/lcpp-org/RustBCA.git #git@github.com:lcpp-org/RustBCA.git
 cd RustBCA
@@ -210,6 +201,15 @@ mkdir kokkos_dev && cd kokkos_dev
 git clone https://github.com/kokkos/kokkos.git #git@github.com:kokkos/kokkos.git
 mkdir build && cd build
 {kokkos_cmake_cmd}
+make -j{num_build_cores}
+make install
+cd {top_level_dir}/builds/{dir_name}
+
+# install pumimbbl
+mkdir pumiMBBL_dev && cd pumiMBBL_dev
+git clone https://github.com/SCOREC/pumiMBBL.git #git@github.com:SCOREC/pumiMBBL.git
+mkdir build && cd build
+cmake ../pumiMBBL -DCMAKE_INSTALL_PREFIX=../install -DKokkos_ROOT=../../kokkos_dev/install -DCMAKE_BUILD_TYPE={build_type}
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
