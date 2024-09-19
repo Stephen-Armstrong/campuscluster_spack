@@ -70,6 +70,8 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
         with open(f"{top_level_dir}/modulefiles/cmake", 'w') as cmake_modulefile:
             cmake_modulefile.write(cmake_modulefile_contents)
     
+    return True
+    
     current_datetime = datetime.datetime.now()
     datetime_format = '%Y-%m-%d'
     datetime_format_length = 10
