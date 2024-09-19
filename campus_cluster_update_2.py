@@ -29,8 +29,8 @@ num_build_cores = 4
 num_versions_kept = 3
 
 #OpenMP and CUDA options
-openmp_options = [True, False]
-cuda_arch_options = [None, 70, 86]
+openmp_options = [True]#, False]
+cuda_arch_options = [None]#, 70, 86]
 
 def update():
     if not os.path.isdir("builds"):
