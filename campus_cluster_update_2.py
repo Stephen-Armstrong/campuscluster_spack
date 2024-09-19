@@ -157,6 +157,18 @@ make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
 
+
+if {{![info exists ::env(LMOD_VERSION_MAJOR)]}} {{
+    module load {mpi_module}
+    module load {compiler_module}
+    module load {cmake_module}
+    module load {python_module}
+}} else {{
+    depends-on {mpi_module}
+    depends-on {compiler_module}
+    depends-on {cmake_module}
+    depends-on {python_module}
+}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/hypre_dev/hypre/src/hypre/.}}
 setenv HYPRE_ROOT {{{build_once_dir_path}/hypre_dev/hypre/src/hypre}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/spdlog_dev/install/.}}
@@ -227,6 +239,7 @@ make install
 cd {top_level_dir}/builds/{dir_name}
 """
             build_dependent_script_mfem = f"""
+cd {top_level_dir}/builds/{dir_name}
 # install mfem
 mkdir mfem_dev && cd mfem_dev
 git clone https://github.com/mfem/mfem.git #git@github.com:mfem/mfem.git
