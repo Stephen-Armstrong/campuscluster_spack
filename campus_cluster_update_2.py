@@ -12,8 +12,8 @@ import shutil
 import glob
 import numpy as np
 import multiprocessing
-
 top_level_dir = os.getcwd()
+
 # Only support one compiler/MPI/CUDA combo at a time.
 # This is mostly because only one combo works on ICC at a time...
 compiler_module = "gcc/8.2.0"
@@ -21,16 +21,15 @@ mpi_module = "openmpi/4.1.4-gcc-8.2.0"
 cuda_module = "cuda/11.6"
 cmake_module = f"{top_level_dir}/modulefiles/cmake"
 python_module = "anaconda/3"
-
 # ICC currently restricts compiling to a certain number of cores
 num_build_cores = 4
-
 # Delete old versions of builds if the number exceeds this
 num_versions_kept = 1
-
-#OpenMP and CUDA options
+#Module Compile options for OpenMP and CUDA
 openmp_options = [True]#, False]
-cuda_arch_options = [None, 70, 86]
+cuda_arch_options = [None, 70, 80, 86, 90]
+
+
 
 def update():
     if not os.path.isdir("builds"):
@@ -175,6 +174,8 @@ cd {top_level_dir}/builds/{dir_name}
                     kokkos_cmake_cmd += f" -DKokkos_ARCH_VOLTA{cuda_arch_option}=ON"
                 elif cuda_arch_option==80 or cuda_arch_option==86:
                     kokkos_cmake_cmd += f" -DKokkos_ARCH_AMPERE{cuda_arch_option}=ON"
+                elif cuda_arch_option==90:
+                    kokkos_cmake_cmd += f" -DKokkos_ARCH_HOPPER{cuda_arch_option}=ON"
             kokkos_cmake_cmd += f" -DKokkos_ENABLE_OPENMP={'ON' if openmp_option else 'OFF'}"
 
             mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR={build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR={build_once_dir_path}/hypre_dev/hypre/src/hypre -DMFEM_USE_MPI=YES"
