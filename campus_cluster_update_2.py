@@ -98,16 +98,7 @@ export RUSTUP_HOME=$PWD/multirust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 source $CARGO_HOME/env
 
-# install hypre
-# TODO build cuda-aware hypre when cuda enabled
-mkdir hypre_dev
-cd hypre_dev
-git clone https://github.com/hypre-space/hypre.git #git@github.com:hypre-space/hypre.git
-cd hypre/src
-./configure
-make -j{num_build_cores}
-make install
-cd {top_level_dir}/builds/{dir_name}
+
 
 # install spdlog
 mkdir spdlog_dev && cd spdlog_dev
@@ -177,8 +168,23 @@ cd {top_level_dir}/builds/{dir_name}
                 elif cuda_arch_option==90:
                     kokkos_cmake_cmd += f" -DKokkos_ARCH_HOPPER{cuda_arch_option}=ON"
             kokkos_cmake_cmd += f" -DKokkos_ENABLE_OPENMP={'ON' if openmp_option else 'OFF'}"
-
-            mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR={build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR={build_once_dir_path}/hypre_dev/hypre/src/hypre -DMFEM_USE_MPI=YES"
+            
+            hypre_configure_cmd = f"./configure"
+            if openmp_option:
+                hypre_configure_cmd += f" --with-openmp"
+            if cuda_enabled:
+                hypre_configure_cmd += f" --with-cuda"
+                if cuda_arch_option == 70:
+                    hypre_configure_cmd += f" --with-cuda-arch=70"
+                elif cuda_arch_option == 80:
+                    hypre_configure_cmd += f" --with-cuda-arch=80"
+                elif cuda_arch_option == 86:
+                    hypre_configure_cmd += f" --with-cuda-arch=86"
+                elif cuda_arch_option == 90:
+                    hypre_configure_cmd += f" --with-cuda-arch=90"
+                    hypre_configure_cmd += f" --with-device-openmp"
+            
+            mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR={build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR={dir_name}/hypre_dev/hypre/src/hypre -DMFEM_USE_MPI=YES"
             if cuda_enabled:
                 mfem_cmake_cmd += f" -DMFEM_USE_CUDA=YES -DCUDA_ARCH=sm_{cuda_arch_option}"
             elif openmp_option:
@@ -196,6 +202,18 @@ module load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_e
 cd builds
 mkdir {dir_name}
 cd {dir_name}
+
+# install hypre
+# TODO build cuda-aware hypre when cuda enabled
+mkdir hypre_dev
+cd hypre_dev
+git clone https://github.com/hypre-space/hypre.git #git@github.com:hypre-space/hypre.git
+cd hypre/src
+#./configure
+{hypre_configure_cmd}
+make -j{num_build_cores}
+make install
+cd {top_level_dir}/builds/{dir_name}
 
 # install kokkos
 mkdir kokkos_dev && cd kokkos_dev
