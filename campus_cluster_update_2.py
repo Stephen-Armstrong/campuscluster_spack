@@ -34,7 +34,7 @@ cuda_arch_options = [70]#, 80, 86, 90, None]
 #     Stephen Armstrong
 #     Andrew Liu
 #     Logan Meredith
-build_types_arr = ["Debug",]# "Release"]
+build_types_arr = ["Debug", "Release"]
 
 def update():
     if not os.path.isdir("builds"):
