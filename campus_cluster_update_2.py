@@ -28,6 +28,7 @@ num_versions_kept = 1
 #Module Compile options for OpenMP and CUDA
 openmp_options = [True]#, False]
 cuda_arch_options = [70]#, 80, 86, 90, None]
+build_types_arr = ("Debug")#, "Release")
 
 
 
@@ -145,7 +146,7 @@ cd {top_level_dir}/builds/{dir_name}
         # Want to build both Debug and Release versions of hpic2deps,
         # but only the Release version of hpic2 itself.
         # First, hpic2deps
-        for build_type in ("Debug", "Release"):
+        for build_type in build_types_arr:
             dir_name = f"hpic2deps-{option_spec_string}-{build_type}-{current_datetime}"
 
             # Remove the build directories for this datetime if it already
