@@ -19,7 +19,6 @@ top_level_dir = os.getcwd()
 compiler_module = "gcc/8.2.0"
 mpi_module = "openmpi/4.1.4-gcc-8.2.0"
 cuda_module = "cuda/11.6"
-cmake_module = f"{top_level_dir}/modulefiles/cmake"
 python_module = "anaconda/3"
 # ICC currently restricts compiling to a certain number of cores
 num_build_cores = len(os.sched_getaffinity(0)) #4
@@ -29,14 +28,16 @@ num_versions_kept = 1
 openmp_options = [True]#, False]
 cuda_arch_options = [70]#, 80, 86, 90, None]
 
-#Don't edit the following line for normal operations
-#WHO SHOULD BE EDITING THE FOLLOWING LINE:
+#Don't edit the following lines for normal operations
+#WHO SHOULD BE EDITING THE FOLLOWING LINES:
 #     Stephen Armstrong
 #     Andrew Liu
 #     Logan Meredith
 build_types_arr = ["Debug", "Release"]
 
 def update():
+    cmake_module = f"{top_level_dir}/modulefiles/cmake"
+    
     if not os.path.isdir("builds"):
         os.mkdir("builds")
     if not os.path.isdir("modulefiles"):
