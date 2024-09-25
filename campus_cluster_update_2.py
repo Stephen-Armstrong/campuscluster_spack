@@ -22,7 +22,7 @@ cuda_module = "cuda/11.6"
 cmake_module = f"{top_level_dir}/modulefiles/cmake"
 python_module = "anaconda/3"
 # ICC currently restricts compiling to a certain number of cores
-num_build_cores = 4
+num_build_cores = len(os.sched_getaffinity(0)) #4
 # Delete old versions of builds if the number exceeds this
 num_versions_kept = 1
 #Module Compile options for OpenMP and CUDA
@@ -34,7 +34,7 @@ cuda_arch_options = [70]#, 80, 86, 90, None]
 #     Stephen Armstrong
 #     Andrew Liu
 #     Logan Meredith
-build_types_arr = ("Debug")#, "Release")
+build_types_arr = ["Debug"]#, "Release")
 
 def update():
     if not os.path.isdir("builds"):
@@ -269,7 +269,7 @@ cd {top_level_dir}/builds/{dir_name}
             subprocess.run(build_dependent_script_hypre, shell=True)
             subprocess.run(build_dependent_script_pumimbbl, shell=True)
             subprocess.run(build_dependent_script_mfem, shell=True)
-            
+            assert 1 == 2 
             
             build_dependent_dir_path = f"{top_level_dir}/builds/{dir_name}"
 
