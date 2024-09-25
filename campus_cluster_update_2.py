@@ -185,7 +185,7 @@ cd {top_level_dir}/builds/{dir_name}
                 elif cuda_arch_option == 90:
                     hypre_configure_cmd += f" --with-gpu-arch=90"
                 '''"""
-            hypre_cmake_cmd = f"cmake ../hypre/src/hypre -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type}"
+            hypre_cmake_cmd = f"cmake ../hypre/src/ -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type}"
             if openmp_option:
                 hypre_cmake_cmd += f" -DHYPRE_WITH_OPENMP=ON"
             if cuda_enabled:
