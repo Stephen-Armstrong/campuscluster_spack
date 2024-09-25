@@ -28,9 +28,13 @@ num_versions_kept = 1
 #Module Compile options for OpenMP and CUDA
 openmp_options = [True]#, False]
 cuda_arch_options = [70]#, 80, 86, 90, None]
+
+#Don't edit the following line for normal operations
+#WHO SHOULD BE EDITING THE FOLLOWING LINE:
+#     Stephen Armstrong
+#     Andrew Liu
+#     Logan Meredith
 build_types_arr = ("Debug")#, "Release")
-
-
 
 def update():
     if not os.path.isdir("builds"):
