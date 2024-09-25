@@ -173,7 +173,7 @@ cd {top_level_dir}/builds/{dir_name}
             if openmp_option:
                 hypre_configure_cmd += f" --with-openmp"
             if cuda_enabled:
-                hypre_configure_cmd += f" --with-kokkos --with-cuda --with-device-openmp"
+                hypre_configure_cmd += f" --with-kokkos --with-cuda --with-gpu-arch={cuda_arch_option}"
                 '''
                 if cuda_arch_option == 70:
                     hypre_configure_cmd += f" --with-gpu-arch=70"
@@ -203,8 +203,6 @@ module load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_e
 cd builds
 mkdir {dir_name}
 cd {dir_name}
-
-
 
 # install kokkos
 mkdir kokkos_dev && cd kokkos_dev
