@@ -306,8 +306,8 @@ if {{![info exists ::env(LMOD_VERSION_MAJOR)]}} {{
 }}
 
 
-prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/hypre_dev/hypre/src/hypre/.}}
-setenv HYPRE_ROOT {{{build_dependent_dir_path}/hypre_dev/hypre/src/hypre}}
+prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/hypre_dev/install/.}}
+setenv HYPRE_ROOT {{{build_dependent_dir_path}/hypre_dev/install}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/spdlog_dev/install/.}}
 prepend-path --delim {{:}} PATH {{{build_dependent_dir_path}/kokkos_dev/install/bin}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/kokkos_dev/install/.}}
