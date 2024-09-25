@@ -219,6 +219,9 @@ make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
 
+"""
+            build_dependent_script_hypre = module_load_script + f"""
+cd {top_level_dir}/builds/{dir_name}
 # install hypre
 # TODO build cuda-aware hypre when cuda enabled
 mkdir hypre_dev
@@ -230,7 +233,9 @@ cd hypre/src
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
-
+"""
+            build_dependent_script_pumimbbl = module_load_script + f"""
+cd {top_level_dir}/builds/{dir_name}
 # install pumimbbl
 mkdir pumiMBBL_dev && cd pumiMBBL_dev
 git clone https://github.com/SCOREC/pumiMBBL.git #git@github.com:SCOREC/pumiMBBL.git
@@ -240,6 +245,7 @@ make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
 """
+
             build_dependent_script_mfem = module_load_script + f"""
 cd {top_level_dir}/builds/{dir_name}
 # install mfem
@@ -254,8 +260,9 @@ cd {top_level_dir}/builds/{dir_name}
 """
 
             subprocess.run(build_dependent_script_kokkos, shell=True)
+            subprocess.run(build_dependent_script_hypre, shell=True)
             assert 1 == 2
-            
+            subprocess.run(build_dependent_script_pumimbbl, shell=True)
             subprocess.run(build_dependent_script_mfem, shell=True)
             
             
