@@ -27,7 +27,7 @@ num_build_cores = 4
 num_versions_kept = 1
 #Module Compile options for OpenMP and CUDA
 openmp_options = [True]#, False]
-cuda_arch_options = [None, 70, 80, 86, 90]
+cuda_arch_options = [70]#, 80, 86, 90, None]
 
 
 
