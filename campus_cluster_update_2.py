@@ -164,7 +164,7 @@ cd {top_level_dir}/builds/{dir_name}
             cuda_enabled = cuda_arch_option != None
             # May want to enable Broadwell optimizations, but not sure
             # if that can be used on all of ICC.
-            kokkos_cmake_cmd = f"cmake ../kokkos -DKokkos_ENABLE_SERIAL=ON -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type}"
+            kokkos_cmake_cmd = f"cmake ../kokkos -DKokkos_ENABLE_SERIAL=ON -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DKokkos_ENABLE_SHARED=ON"
             if build_type == "Debug":
                 kokkos_cmake_cmd += " -DKokkos_ENABLE_DEBUG=ON -DKokkos_ENABLE_DEBUG_BOUNDS_CHECK=ON -DKokkos_ENABLE_DEBUG_DUALVIEW_MODIFY_CHECK=ON"
             if cuda_enabled:
@@ -193,11 +193,11 @@ cd {top_level_dir}/builds/{dir_name}
                 elif cuda_arch_option == 90:
                     hypre_configure_cmd += f" --with-gpu-arch=90"
                 '''"""
-            hypre_cmake_cmd = f"cmake ../hypre/src/ -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DHYPRE_BUILD_EXAMPLES=ON -DHYPRE_ENABLE_SHARED=OFF"
+            hypre_cmake_cmd = f"cmake ../hypre/src/ -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DKokkos_DIR={build_dependent_dir_path}/kokkos_dev/install -DHYPRE_BUILD_EXAMPLES=ON -DHYPRE_ENABLE_SHARED=ON"
             if openmp_option:
                 hypre_cmake_cmd += f" -DHYPRE_WITH_OPENMP=ON"
             if cuda_enabled:
-                hypre_cmake_cmd += f" -DHYPRE_WITH_CUDA=ON -DHYPRE_CUDA_SM={cuda_arch_option}"
+                hypre_cmake_cmd += f" -DHYPRE_WITH_CUDA=ON -DHYPRE_CUDA_SM={cuda_arch_option} -DHYPRE_ENABLE_GPU_PROFILING=ON -DHYPRE_ENABLE_CUSPARSE=ON -DHYPRE_ENABLE_CUBLAS=ON -DHYPRE_ENABLE_CURAND=ON -DHYPRE_ENABLE_DEVICE_POOL=ON -DHYPRE_ENABLE_UNIFIED_MEMORY=ON"
             
             mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR={build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR={build_dependent_dir_path}/hypre_dev/install -DMFEM_USE_MPI=YES"
             if cuda_enabled:
@@ -310,6 +310,8 @@ if {{![info exists ::env(LMOD_VERSION_MAJOR)]}} {{
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/hypre_dev/install/.}}
 setenv HYPRE_ROOT {{{build_dependent_dir_path}/hypre_dev/install}}
 append-path --delim {{:}} LD_LIBRARY_PATH {{{build_once_dir_path}/hypre_dev/install/lib64}}
+setenv HYPRE_DIR {{{build_dependent_dir_path}/hypre_dev/install}}
+
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/spdlog_dev/install/.}}
 prepend-path --delim {{:}} PATH {{{build_dependent_dir_path}/kokkos_dev/install/bin}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/kokkos_dev/install/.}}
