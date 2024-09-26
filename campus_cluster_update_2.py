@@ -197,7 +197,16 @@ cd {top_level_dir}/builds/{dir_name}
             if openmp_option:
                 hypre_cmake_cmd += f" -DHYPRE_WITH_OPENMP=ON"
             if cuda_enabled:
-                hypre_cmake_cmd += f" -DHYPRE_WITH_CUDA=ON -DHYPRE_CUDA_SM={cuda_arch_option} -DHYPRE_ENABLE_GPU_PROFILING=ON -DHYPRE_ENABLE_CUSPARSE=ON -DHYPRE_ENABLE_CUBLAS=ON -DHYPRE_ENABLE_CURAND=ON -DHYPRE_ENABLE_DEVICE_POOL=ON -DHYPRE_ENABLE_UNIFIED_MEMORY=ON"
+                hypre_cmake_cmd += f" -DHYPRE_ENABLE_KOKKOS=ON \
+-DKokkos_ROOT ={build_dependent_dir_path}/kokkos_dev/install \
+-DHYPRE_WITH_CUDA=ON \
+-DHYPRE_CUDA_SM={cuda_arch_option} \
+-DHYPRE_ENABLE_GPU_PROFILING=ON \
+-DHYPRE_ENABLE_CUSPARSE=ON \
+-DHYPRE_ENABLE_CUBLAS=ON \
+-DHYPRE_ENABLE_CURAND=ON \
+-DHYPRE_ENABLE_DEVICE_POOL=ON \
+-DHYPRE_ENABLE_UNIFIED_MEMORY=ON"
             
             mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR={build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR={build_dependent_dir_path}/hypre_dev/install -DMFEM_USE_MPI=YES"
             if cuda_enabled:
