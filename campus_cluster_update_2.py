@@ -36,13 +36,12 @@ cuda_arch_options = [70, 90]#, 80, 86, 90, None]
 build_types_arr = ["Release", ] #"Debug",
 
 def update():
-    cmake_module = f"{top_level_dir}/modulefiles/cmake"
-    
-    if not os.path.isdir("builds"):
-        os.mkdir("builds")
-    if not os.path.isdir("modulefiles"):
-        os.mkdir("modulefiles")
+    if not os.path.isdir(f"{top_level_dir}/builds"):
+        os.mkdir(f"{top_level_dir}/builds")
+    if not os.path.isdir(f"{top_level_dir}/builds/modulefiles"):
+        os.mkdir(f"{top_level_dir}/builds/modulefiles")
 
+    cmake_module = f"{top_level_dir}/modulefiles/cmake"
     # ICC's cmake modules are broken and stupid so build our own.
     if not os.path.isdir("cmake"):
         cmake_build_script = f"""
