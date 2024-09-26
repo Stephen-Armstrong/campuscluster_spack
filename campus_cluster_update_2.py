@@ -197,7 +197,7 @@ cd {top_level_dir}/builds/{dir_name}
             if openmp_option:
                 hypre_cmake_cmd += f" -DHYPRE_WITH_OPENMP=ON"
             if cuda_enabled:
-                hypre_cmake_cmd += f" -DHYPRE_WITH_CUDA=ON -DHYPRE_CUDA_SM={cuda_arch_option}"
+                hypre_cmake_cmd += f" -DHYPRE_WITH_CUDA=ON -DHYPRE_CUDA_SM={cuda_arch_option} -DHYPRE_ENABLE_CURAND=OFF"
             
             mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR={build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR={build_dependent_dir_path}/hypre_dev/install -DMFEM_USE_MPI=YES"
             if cuda_enabled:
@@ -270,7 +270,7 @@ cd {top_level_dir}/builds/{dir_name}
 
             subprocess.run(build_dependent_script_kokkos, shell=True)
             subprocess.run(build_dependent_script_hypre, shell=True)
-            assert 1==2
+            #assert 1==2
             subprocess.run(build_dependent_script_pumimbbl, shell=True)
             subprocess.run(build_dependent_script_mfem, shell=True)
             #assert 1 == 2 
