@@ -12,7 +12,7 @@ import shutil
 import glob
 import numpy as np
 import multiprocessing
-top_level_dir = os.getcwd()
+top_level_dir = f"/projects/illinois/eng/npre/dcurreli" #os.getcwd()
 
 # Only support one compiler/MPI/CUDA combo at a time.
 # This is mostly because only one combo works on ICC at a time...
@@ -291,6 +291,7 @@ cd {top_level_dir}/builds/{dir_name}
 """
 
             subprocess.run(build_dependent_script_kokkos, shell=True)
+            assert 1==2
             subprocess.run(build_dependent_script_hypre, shell=True) #Tried to make hypre cuda aware. It didn't work before APS-DPP.
             #assert 1==2
             subprocess.run(build_dependent_script_pumimbbl, shell=True)
