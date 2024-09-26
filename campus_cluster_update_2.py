@@ -178,13 +178,13 @@ cd {top_level_dir}/builds/{dir_name}
             kokkos_cmake_cmd += f" -DKokkos_ENABLE_OPENMP={'ON' if openmp_option else 'OFF'}"
             
             
-            hypre_configure_cmd = f"./configure --enable-shared=YES --prefix={build_dependent_dir_path}/hypre_dev/install"
+            hypre_configure_cmd = f"./configure --enable-shared --prefix={build_dependent_dir_path}/hypre_dev/install"
             if build_type == "Debug":
-                hypre_configure_cmd += f" --enable-debug=YES"
+                hypre_configure_cmd += f" --enable-debug"
             if openmp_option:
-                hypre_configure_cmd += f" --with-openmp=YES"
+                hypre_configure_cmd += f" --with-openmp"
             if cuda_enabled:
-                hypre_configure_cmd += f" --with-kokkos=YES --with-cuda=YES --with-gpu-arch={cuda_arch_option}"
+                hypre_configure_cmd += f" --with-kokkos--with-cuda --with-gpu-arch={cuda_arch_option}"
                 '''
                 if cuda_arch_option == 70:
                     hypre_configure_cmd += f" --with-gpu-arch=70"
