@@ -177,7 +177,7 @@ cd {top_level_dir}/builds/{dir_name}
                     kokkos_cmake_cmd += f" -DKokkos_ARCH_HOPPER{cuda_arch_option}=ON"
             kokkos_cmake_cmd += f" -DKokkos_ENABLE_OPENMP={'ON' if openmp_option else 'OFF'}"
             
-            """
+            
             hypre_configure_cmd = f"./configure --enable-shared=YES --prefix={build_dependent_dir_path}/hypre_dev/install"
             if build_type == "Debug":
                 hypre_configure_cmd += f" --enable-debug=YES"
@@ -209,7 +209,7 @@ cd {top_level_dir}/builds/{dir_name}
 -DHYPRE_ENABLE_CURAND=ON \
 -DHYPRE_ENABLE_DEVICE_POOL=ON \
 -DHYPRE_ENABLE_UNIFIED_MEMORY=ON"
-            
+            """
             mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR={build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR={build_dependent_dir_path}/hypre_dev/install -DMFEM_USE_MPI=YES"
             if cuda_enabled:
                 mfem_cmake_cmd += f" -DMFEM_USE_CUDA=YES -DCUDA_ARCH=sm_{cuda_arch_option}"
@@ -249,7 +249,7 @@ git clone https://github.com/hypre-space/hypre.git #git@github.com:hypre-space/h
 #cd hypre/src
 mkdir build && cd build
 #./configure
-{hypre_cmake_cmd}
+{hypre_configure_cmd}
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
