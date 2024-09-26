@@ -279,7 +279,7 @@ cd {top_level_dir}/builds/{dir_name}
 
             subprocess.run(build_dependent_script_kokkos, shell=True)
             subprocess.run(build_dependent_script_hypre, shell=True)
-            assert 1==2
+            #assert 1==2
             subprocess.run(build_dependent_script_pumimbbl, shell=True)
             subprocess.run(build_dependent_script_mfem, shell=True)
             #assert 1 == 2 
