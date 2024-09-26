@@ -147,6 +147,7 @@ cd {top_level_dir}/builds/{dir_name}
 
 # install hdf5
 mkdir hdf5_dev && cd hdf5_dev
+pwd
 git clone https://github.com/HDFGroup/hdf5.git #git@github.com:HDFGroup/hdf5.git
 mkdir build && cd build
 cmake ../hdf5 -DCMAKE_BUILD_TYPE={build_type} -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_ENABLE_PARALLEL=ON -DHDF5_BUILD_CPP_LIB=ON -DALLOW_UNSUPPORTED=ON -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
