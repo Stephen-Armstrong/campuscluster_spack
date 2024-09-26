@@ -13,6 +13,7 @@ import glob
 import numpy as np
 import multiprocessing
 top_level_dir = f"/projects/illinois/eng/npre/dcurreli" #os.getcwd()
+os.chdir(top_level_dir)
 
 # Only support one compiler/MPI/CUDA combo at a time.
 # This is mostly because only one combo works on ICC at a time...
