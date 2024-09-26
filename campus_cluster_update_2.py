@@ -103,17 +103,18 @@ export CARGO_HOME=$PWD/cargo
 export RUSTUP_HOME=$PWD/multirust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 source $CARGO_HOME/env
+cd {top_level_dir}/builds/{dir_name}
 
 # install hypre
 # TODO build cuda-aware hypre when cuda enabled
-mkdir hypre_dev
-cd hypre_dev
-git clone https://github.com/hypre-space/hypre.git #git@github.com:hypre-space/hypre.git
-cd hypre/src
-./configure
-make -j{num_build_cores}
-make install
-cd {top_level_dir}/builds/{dir_name}
+#mkdir hypre_dev
+#cd hypre_dev
+#git clone https://github.com/hypre-space/hypre.git #git@github.com:hypre-space/hypre.git
+#cd hypre/src
+#./configure
+#make -j{num_build_cores}
+#make install
+#cd {top_level_dir}/builds/{dir_name}
 
 # install spdlog
 mkdir spdlog_dev && cd spdlog_dev
@@ -173,7 +174,7 @@ cd {top_level_dir}/builds/{dir_name}
             cuda_enabled = cuda_arch_option != None
             # May want to enable Broadwell optimizations, but not sure
             # if that can be used on all of ICC.
-            kokkos_cmake_cmd = f"cmake ../kokkos -DKokkos_ENABLE_SERIAL=ON -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DKokkos_ENABLE_SHARED=ON"
+            kokkos_cmake_cmd = f"cmake ../kokkos -DKokkos_ENABLE_SERIAL=ON -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DKokkos_ENABLE_SHARED=OFF"
             if build_type == "Debug":
                 kokkos_cmake_cmd += " -DKokkos_ENABLE_DEBUG=ON -DKokkos_ENABLE_DEBUG_BOUNDS_CHECK=ON -DKokkos_ENABLE_DEBUG_DUALVIEW_MODIFY_CHECK=ON"
             if cuda_enabled:
@@ -290,7 +291,7 @@ cd {top_level_dir}/builds/{dir_name}
 """
 
             subprocess.run(build_dependent_script_kokkos, shell=True)
-            #subprocess.run(build_dependent_script_hypre, shell=True) #Tried to make hypre cuda aware. It didn't work before APS-DPP.
+            subprocess.run(build_dependent_script_hypre, shell=True) #Tried to make hypre cuda aware. It didn't work before APS-DPP.
             #assert 1==2
             subprocess.run(build_dependent_script_pumimbbl, shell=True)
             subprocess.run(build_dependent_script_mfem, shell=True)
