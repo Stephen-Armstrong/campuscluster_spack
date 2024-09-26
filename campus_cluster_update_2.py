@@ -104,7 +104,16 @@ export RUSTUP_HOME=$PWD/multirust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 source $CARGO_HOME/env
 
-
+# install hypre
+# TODO build cuda-aware hypre when cuda enabled
+mkdir hypre_dev
+cd hypre_dev
+git clone https://github.com/hypre-space/hypre.git #git@github.com:hypre-space/hypre.git
+cd hypre/src
+./configure
+make -j{num_build_cores}
+make install
+cd {top_level_dir}/builds/{dir_name}
 
 # install spdlog
 mkdir spdlog_dev && cd spdlog_dev
@@ -281,8 +290,8 @@ cd {top_level_dir}/builds/{dir_name}
 """
 
             subprocess.run(build_dependent_script_kokkos, shell=True)
-            subprocess.run(build_dependent_script_hypre, shell=True)
-            assert 1==2
+            #subprocess.run(build_dependent_script_hypre, shell=True) #Tried to make hypre cuda aware. It didn't work before APS-DPP.
+            #assert 1==2
             subprocess.run(build_dependent_script_pumimbbl, shell=True)
             subprocess.run(build_dependent_script_mfem, shell=True)
             #assert 1 == 2 
