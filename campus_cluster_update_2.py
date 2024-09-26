@@ -184,7 +184,7 @@ cd {top_level_dir}/builds/{dir_name}
             if openmp_option:
                 hypre_configure_cmd += f" --with-openmp"
             if cuda_enabled:
-                hypre_configure_cmd += f" --with-kokkos" # --with-cuda --with-gpu-arch={cuda_arch_option}"
+                hypre_configure_cmd += f" --with-kokkos --with-cuda"# --with-gpu-arch={cuda_arch_option}"
                 '''
                 if cuda_arch_option == 70:
                     hypre_configure_cmd += f" --with-gpu-arch=70"
@@ -240,6 +240,7 @@ cd {top_level_dir}/builds/{dir_name}
 
 """
             build_dependent_script_hypre = module_load_script + f"""
+module load kokkos
 cd {top_level_dir}/builds/{dir_name}
 # install hypre
 # TODO build cuda-aware hypre when cuda enabled
