@@ -198,7 +198,7 @@ cd {top_level_dir}/builds/{dir_name}
                 hypre_cmake_cmd += f" -DHYPRE_WITH_OPENMP=ON"
             if cuda_enabled:
                 hypre_cmake_cmd += f" -DHYPRE_ENABLE_KOKKOS=ON \
--DKokkos_ROOT ={build_dependent_dir_path}/kokkos_dev/install \
+-DKokkos_ROOT={build_dependent_dir_path}/kokkos_dev/install \
 -DHYPRE_WITH_CUDA=ON \
 -DHYPRE_CUDA_SM={cuda_arch_option} \
 -DHYPRE_ENABLE_GPU_PROFILING=ON \
@@ -279,7 +279,7 @@ cd {top_level_dir}/builds/{dir_name}
 
             subprocess.run(build_dependent_script_kokkos, shell=True)
             subprocess.run(build_dependent_script_hypre, shell=True)
-            #assert 1==2
+            assert 1==2
             subprocess.run(build_dependent_script_pumimbbl, shell=True)
             subprocess.run(build_dependent_script_mfem, shell=True)
             #assert 1 == 2 
@@ -319,6 +319,9 @@ if {{![info exists ::env(LMOD_VERSION_MAJOR)]}} {{
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/hypre_dev/install/.}}
 setenv HYPRE_ROOT {{{build_dependent_dir_path}/hypre_dev/install}}
 append-path --delim {{:}} LD_LIBRARY_PATH {{{build_once_dir_path}/hypre_dev/install/lib64}}
+setenv HYPRE_DIR {{{build_dependent_dir_path}/hypre_dev/install}}
+setenv HYPRE_INCLUDE_DIRS {{{build_dependent_dir_path}/hypre_dev/install/include}}
+setenv HYPRE_LIBRARY_DIRS {{{build_dependent_dir_path}/hypre_dev/install/lib64}}
 
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/spdlog_dev/install/.}}
 prepend-path --delim {{:}} PATH {{{build_dependent_dir_path}/kokkos_dev/install/bin}}
