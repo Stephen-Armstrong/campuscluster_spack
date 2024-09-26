@@ -320,6 +320,8 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/hypre_
 setenv HYPRE_ROOT {{{build_dependent_dir_path}/hypre_dev/install}}
 append-path --delim {{:}} LD_LIBRARY_PATH {{{build_once_dir_path}/hypre_dev/install/lib64}}
 setenv HYPRE_DIR {{{build_dependent_dir_path}/hypre_dev/install}}
+setenv HYPRE_INCLUDE_DIRS {{{build_dependent_dir_path}/hypre_dev/install/include}}
+setenv HYPRE_LIBRARY_DIRS {{{build_dependent_dir_path}/hypre_dev/install/lib64}}
 
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/spdlog_dev/install/.}}
 prepend-path --delim {{:}} PATH {{{build_dependent_dir_path}/kokkos_dev/install/bin}}
