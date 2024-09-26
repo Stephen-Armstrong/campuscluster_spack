@@ -37,10 +37,10 @@ cuda_arch_options = [70, 90]#, 80, 86, 90, None]
 build_types_arr = ["Release", ] #"Debug",
 
 def update():
-    if not os.path.isdir(f"{top_level_dir}/builds"):
-        os.mkdir(f"{top_level_dir}/builds")
-    if not os.path.isdir(f"{top_level_dir}/builds/modulefiles"):
-        os.mkdir(f"{top_level_dir}/builds/modulefiles")
+    if not os.path.isdir("builds"):
+        os.mkdir("builds")
+    if not os.path.isdir("modulefiles"):
+        os.mkdir("modulefiles")
 
     cmake_module = f"{top_level_dir}/modulefiles/cmake"
     # ICC's cmake modules are broken and stupid so build our own.
@@ -147,9 +147,7 @@ cd {top_level_dir}/builds/{dir_name}
 
 # install hdf5
 mkdir hdf5_dev && cd hdf5_dev
-pwd
 git clone https://github.com/HDFGroup/hdf5.git #git@github.com:HDFGroup/hdf5.git
-cd hdf5
 mkdir build && cd build
 cmake ../hdf5 -DCMAKE_BUILD_TYPE={build_type} -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_ENABLE_PARALLEL=ON -DHDF5_BUILD_CPP_LIB=ON -DALLOW_UNSUPPORTED=ON -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
 make -j{num_build_cores}
