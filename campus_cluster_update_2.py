@@ -197,7 +197,7 @@ cd {top_level_dir}/builds/{dir_name}
             if openmp_option:
                 hypre_cmake_cmd += f" -DHYPRE_WITH_OPENMP=ON"
             if cuda_enabled:
-                hypre_cmake_cmd += f" -DHYPRE_ENABLE_KOKKOS=ON \
+                hypre_cmake_cmd += f" -DHYPRE_WITH_KOKKOS=ON \
 -DKokkos_ROOT={build_dependent_dir_path}/kokkos_dev/install \
 -DHYPRE_WITH_CUDA=ON \
 -DHYPRE_CUDA_SM={cuda_arch_option} \
