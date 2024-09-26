@@ -193,11 +193,11 @@ cd {top_level_dir}/builds/{dir_name}
                 elif cuda_arch_option == 90:
                     hypre_configure_cmd += f" --with-gpu-arch=90"
                 '''"""
-            hypre_cmake_cmd = f"cmake ../hypre/src/ -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type}"
+            hypre_cmake_cmd = f"cmake ../hypre/src/ -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DHYPRE_BUILD_EXAMPLES=ON -DHYPRE_ENABLE_SHARED=ON"
             if openmp_option:
                 hypre_cmake_cmd += f" -DHYPRE_WITH_OPENMP=ON"
             if cuda_enabled:
-                hypre_cmake_cmd += f" -lcurand -DHYPRE_WITH_CUDA=ON -DHYPRE_CUDA_SM={cuda_arch_option}"
+                hypre_cmake_cmd += f" -DHYPRE_WITH_CUDA=ON -DHYPRE_CUDA_SM={cuda_arch_option}"
             
             mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR={build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR={build_dependent_dir_path}/hypre_dev/install -DMFEM_USE_MPI=YES"
             if cuda_enabled:
