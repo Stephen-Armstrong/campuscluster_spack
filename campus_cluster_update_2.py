@@ -220,7 +220,7 @@ cd {top_level_dir}/builds/{dir_name}
 -DHYPRE_ENABLE_DEVICE_POOL=ON \
 -DHYPRE_ENABLE_UNIFIED_MEMORY=ON"
             """
-            mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR={build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR={build_once_dir_path}/hypre_dev/install -DMFEM_USE_MPI=YES"
+            mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR={build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR={build_once_dir_path}/hypre_dev/hypre/src/hypre -DMFEM_USE_MPI=YES"
             if cuda_enabled:
                 mfem_cmake_cmd += f" -DMFEM_USE_CUDA=YES -DCUDA_ARCH=sm_{cuda_arch_option}"
             elif openmp_option:
@@ -330,12 +330,12 @@ if {{![info exists ::env(LMOD_VERSION_MAJOR)]}} {{
 }}
 
 
-prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/hypre_dev/install/.}}
-setenv HYPRE_ROOT {{{build_once_dir_path}/hypre_dev/install}}
-append-path --delim {{:}} LD_LIBRARY_PATH {{{build_once_dir_path}/hypre_dev/install/lib64}}
-setenv HYPRE_DIR {{{build_once_dir_path}/hypre_dev/install}}
-setenv HYPRE_INCLUDE_DIRS {{{build_once_dir_path}/hypre_dev/install/include}}
-setenv HYPRE_LIBRARY_DIRS {{{build_once_dir_path}/hypre_dev/install/lib64}}
+prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/hypre_dev/hypre/src/hypre/.}}
+setenv HYPRE_ROOT {{{build_once_dir_path}/hypre_dev/hypre/src/hypre}}
+#append-path --delim {{:}} LD_LIBRARY_PATH {{{build_once_dir_path}/hypre_dev/install/lib64}}
+#setenv HYPRE_DIR {{{build_once_dir_path}/hypre_dev/install}}
+#setenv HYPRE_INCLUDE_DIRS {{{build_once_dir_path}/hypre_dev/install/include}}
+#setenv HYPRE_LIBRARY_DIRS {{{build_once_dir_path}/hypre_dev/install/lib64}}
 
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/spdlog_dev/install/.}}
 prepend-path --delim {{:}} PATH {{{build_dependent_dir_path}/kokkos_dev/install/bin}}
