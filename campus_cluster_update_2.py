@@ -19,7 +19,7 @@ os.chdir(top_level_dir)
 # This is mostly because only one combo works on ICC at a time...
 compiler_module = "gcc/8.2.0"
 mpi_module = "openmpi/4.1.4-gcc-8.2.0"
-cuda_module = "cuda/11.8"
+cuda_module = "cuda/11.8" #11.6
 python_module = "anaconda/3"
 # ICC currently restricts compiling to a certain number of cores
 num_build_cores = len(os.sched_getaffinity(0)) #4
@@ -291,8 +291,8 @@ cd {top_level_dir}/builds/{dir_name}
 """
 
             subprocess.run(build_dependent_script_kokkos, shell=True)
-            assert 1==2
-            subprocess.run(build_dependent_script_hypre, shell=True) #Tried to make hypre cuda aware. It didn't work before APS-DPP.
+            #assert 1==2
+            #subprocess.run(build_dependent_script_hypre, shell=True) #Tried to make hypre cuda aware. It didn't work before APS-DPP.
             #assert 1==2
             subprocess.run(build_dependent_script_pumimbbl, shell=True)
             subprocess.run(build_dependent_script_mfem, shell=True)
