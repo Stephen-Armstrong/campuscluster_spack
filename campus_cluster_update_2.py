@@ -19,7 +19,7 @@ os.chdir(top_level_dir)
 # This is mostly because only one combo works on ICC at a time...
 compiler_module = "gcc/8.2.0"
 mpi_module = "openmpi/4.1.4-gcc-8.2.0"
-cuda_module = "cuda/11.6"
+cuda_module = "cuda/11.8"
 python_module = "anaconda/3"
 # ICC currently restricts compiling to a certain number of cores
 num_build_cores = len(os.sched_getaffinity(0)) #4
