@@ -27,14 +27,14 @@ num_build_cores = len(os.sched_getaffinity(0)) #4
 num_versions_kept = 1
 #Module Compile options for OpenMP and CUDA
 openmp_options = [True]#, False]
-cuda_arch_options = [90, ]#70, 80, 86, 90, None]
+cuda_arch_options = [90, 70, 80, 86, None]
 
 #Don't edit the following lines for normal operations
 #WHO SHOULD BE EDITING THE FOLLOWING LINES:
 #     Stephen Armstrong
 #     Andrew Liu
 #     Logan Meredith
-build_types_arr = ["Release", ] #"Debug",
+build_types_arr = ["Release", "Debug"]
 
 def update():
     if not os.path.isdir("builds"):
