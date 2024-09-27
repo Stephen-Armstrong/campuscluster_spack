@@ -107,14 +107,14 @@ cd {top_level_dir}/builds/{dir_name}
 
 # install hypre
 # TODO build cuda-aware hypre when cuda enabled
-#mkdir hypre_dev
-#cd hypre_dev
-#git clone https://github.com/hypre-space/hypre.git #git@github.com:hypre-space/hypre.git
-#cd hypre/src
-#./configure
-#make -j{num_build_cores}
-#make install
-#cd {top_level_dir}/builds/{dir_name}
+mkdir hypre_dev
+cd hypre_dev
+git clone https://github.com/hypre-space/hypre.git #git@github.com:hypre-space/hypre.git
+cd hypre/src
+./configure
+make -j{num_build_cores}
+make install
+cd {top_level_dir}/builds/{dir_name}
 
 # install spdlog
 mkdir spdlog_dev && cd spdlog_dev
