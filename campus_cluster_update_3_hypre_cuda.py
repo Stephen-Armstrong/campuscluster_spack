@@ -248,9 +248,8 @@ make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
 
-"""
-            build_dependent_script_hypre = module_load_script + f"""
-module load kokkos
+            #build_dependent_script_hypre = module_load_script + f
+#module load kokkos
 cd {top_level_dir}/builds/{dir_name}
 # install hypre
 # TODO build cuda-aware hypre when cuda enabled
@@ -290,8 +289,10 @@ cd {top_level_dir}/builds/{dir_name}
 
 """
             module_add_hypre_dir_script = f"""
+
 setenv HYPRE_ROOT {{{build_dependent_dir_path}/hypre_dev/hypre/src/hypre}}
-append-path --delim {{:}} LD_LIBRARY_PATH {{{build_dependent_dir_path}/hypre_dev/install/lib64}}
+setenv HYPRE_DIR {{{build_dependent_dir_path}/hypre_dev/hypre/src/hypre}}
+append-path --delim {{:}} LD_LIBRARY_PATH {{{build_dependent_dir_path}/hypre_dev/hypre/src/hypre/lib64}}
 """
 
             subprocess.run(build_dependent_script_kokkos, shell=True)
