@@ -298,7 +298,7 @@ append-path --delim {{:}} LD_LIBRARY_PATH {{{build_dependent_dir_path}/hypre_dev
             subprocess.run(build_dependent_script_kokkos, shell=True)
             #assert 1==2
             #subprocess.run(build_dependent_script_hypre, shell=True) #Tried to make hypre cuda aware. It didn't work before APS-DPP.
-            assert 1==2
+            #assert 1==2
             subprocess.run(build_dependent_script_pumimbbl, shell=True)
             module_load_script += module_add_hypre_dir_script
             subprocess.run(build_dependent_script_mfem, shell=True)
