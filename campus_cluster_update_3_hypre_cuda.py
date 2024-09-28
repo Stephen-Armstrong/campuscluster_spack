@@ -194,7 +194,7 @@ cd {top_level_dir}/builds/{dir_name}
             if openmp_option:
                 hypre_configure_cmd += f" --with-openmp"
             if cuda_enabled:
-                hypre_configure_cmd += f" --with-kokkos  --with-cuda --with-gpu-arch={cuda_arch_option} --with-cuda-home=/usr/local/{cuda_module}"
+                hypre_configure_cmd += f" --with-cuda --with-gpu-arch={cuda_arch_option} --with-cuda-home=/usr/local/{cuda_module}"
                 '''
                 if cuda_arch_option == 70:
                     hypre_configure_cmd += f" --with-gpu-arch=70"
