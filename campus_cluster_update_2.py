@@ -61,7 +61,7 @@ cd ..
         """
         subprocess.run(cmake_build_script, shell=True)
 
-        cmake_modulefile_contents = f"""#%Module1.0
+        cmake_modulefile_contents = f"""#%Module
 
 module-whatis {{A cross-platform, open-source build system. CMake is a family of tools designed to build, test and package software. }}
 
