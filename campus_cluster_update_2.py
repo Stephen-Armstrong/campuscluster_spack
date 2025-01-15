@@ -26,16 +26,15 @@ cuda_module = "cuda/11.8" #11.6
 compiler_module = "gcc/13.3.0"
 mpi_module = "openmpi/5.0.1-gcc-13.3.0"
 cuda_module = "cuda/12.6" #11.6
-
-
 python_module = "anaconda/3"
+
 # ICC currently restricts compiling to a certain number of cores
 num_build_cores = len(os.sched_getaffinity(0)) #4
 # Delete old versions of builds if the number exceeds this
 num_versions_kept = 1
 #Module Compile options for OpenMP and CUDA
 openmp_options = [True]#, False]
-cuda_arch_options = [90, 70, 80, 86, None]
+cuda_arch_options = [None] #70, 80, 86, 90]
 
 #Don't edit the following lines for normal operations
 #WHO SHOULD BE EDITING THE FOLLOWING LINES:
@@ -112,7 +111,8 @@ export RUSTUP_HOME=$PWD/multirust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 source $CARGO_HOME/env
 cd {top_level_dir}/builds/{dir_name}
-
+"""
+'''
 # install hypre
 # TODO build cuda-aware hypre when cuda enabled
 mkdir hypre_dev
@@ -162,6 +162,7 @@ make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
 """
+'''
     subprocess.run(build_once_script, shell=True)
     
     for openmp_option, cuda_arch_option in itertools.product(openmp_options, cuda_arch_options):
