@@ -87,7 +87,6 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
     datetime_format_length = 10
     current_datetime = current_datetime.strftime(datetime_format)
     
-    assert 1==2
     
     dir_name = f"build_once_modules"
     build_once_dir_path = f"{top_level_dir}/builds/build_once_modules"
@@ -166,6 +165,8 @@ cd {top_level_dir}/builds/{dir_name}
 """
 '''
     subprocess.run(build_once_script, shell=True)
+    
+    assert 1==2
     
     for openmp_option, cuda_arch_option in itertools.product(openmp_options, cuda_arch_options):
         option_spec_string = f"{'+' if openmp_option else '~'}openmp-cuda-arch-{str(cuda_arch_option)}"
