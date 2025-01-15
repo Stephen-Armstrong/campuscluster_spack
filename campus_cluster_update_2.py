@@ -50,7 +50,7 @@ def update():
         os.mkdir("modulefiles")
 
     #cmake_module = f"{top_level_dir}/modulefiles/cmake"
-    cmake_module = "gcc/13.3.0"
+    cmake_module = "cmake/3.26.5" #Overwriting cmake to what is already installed on the cluster so the following install script isn't necessary but still runs.
     
     # ICC's cmake modules are broken and stupid so build our own.
     if not os.path.isdir("cmake"):
@@ -114,8 +114,7 @@ export RUSTUP_HOME=$PWD/multirust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 source $CARGO_HOME/env
 cd {top_level_dir}/builds/{dir_name}
-"""
-    '''
+
 # install hypre
 # TODO build cuda-aware hypre when cuda enabled
 mkdir hypre_dev
@@ -126,7 +125,8 @@ cd hypre/src
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
-
+"""
+    '''
 # install spdlog
 mkdir spdlog_dev && cd spdlog_dev
 git clone https://github.com/gabime/spdlog.git #git@github.com:gabime/spdlog.git
