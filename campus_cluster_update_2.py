@@ -112,7 +112,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-mod
 source $CARGO_HOME/env
 cd {top_level_dir}/builds/{dir_name}
 """
-'''
+    '''
 # install hypre
 # TODO build cuda-aware hypre when cuda enabled
 mkdir hypre_dev
