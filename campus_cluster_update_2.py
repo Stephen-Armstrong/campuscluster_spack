@@ -17,9 +17,17 @@ os.chdir(top_level_dir)
 
 # Only support one compiler/MPI/CUDA combo at a time.
 # This is mostly because only one combo works on ICC at a time...
+''' #Old modules for RHL 7.2 keeping around for reference
 compiler_module = "gcc/8.2.0"
 mpi_module = "openmpi/4.1.4-gcc-8.2.0"
 cuda_module = "cuda/11.8" #11.6
+'''
+
+compiler_module = "gcc/13.3.0"
+mpi_module = "openmpi/5.0.1-gcc-13.3.0"
+cuda_module = "cuda/12.6" #11.6
+
+
 python_module = "anaconda/3"
 # ICC currently restricts compiling to a certain number of cores
 num_build_cores = len(os.sched_getaffinity(0)) #4
