@@ -49,7 +49,9 @@ def update():
     if not os.path.isdir("modulefiles"):
         os.mkdir("modulefiles")
 
-    cmake_module = f"{top_level_dir}/modulefiles/cmake"
+    #cmake_module = f"{top_level_dir}/modulefiles/cmake"
+    cmake_module = "gcc/13.3.0"
+    
     # ICC's cmake modules are broken and stupid so build our own.
     if not os.path.isdir("cmake"):
         cmake_build_script = f"""
