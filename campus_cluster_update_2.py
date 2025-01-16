@@ -21,12 +21,13 @@ os.chdir(top_level_dir)
 compiler_module = "gcc/8.2.0"
 mpi_module = "openmpi/4.1.4-gcc-8.2.0"
 cuda_module = "cuda/11.8" #11.6
+python_module = "anaconda/3"
 '''
 
 compiler_module = "gcc/13.3.0"
 mpi_module = "openmpi/5.0.1-gcc-13.3.0"
 cuda_module = "cuda/12.6" #11.6
-python_module = "anaconda/3"
+python_module = "python/3.10.16"
 
 # ICC currently restricts compiling to a certain number of cores
 num_build_cores = len(os.sched_getaffinity(0)) #4
