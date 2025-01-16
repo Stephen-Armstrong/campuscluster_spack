@@ -64,7 +64,7 @@ cd ..
         """
         subprocess.run(cmake_build_script, shell=True)
 
-        cmake_modulefile_contents = f"""#%Module1.0
+        cmake_modulefile_contents = f"""#%Module3.26
 
 module-whatis {{A cross-platform, open-source build system. CMake is a family of tools designed to build, test and package software. }}
 
@@ -90,6 +90,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
     datetime_format_length = 10
     current_datetime = current_datetime.strftime(datetime_format)
     
+    assert 1==2
     
     dir_name = f"build_once_modules"
     build_once_dir_path = f"{top_level_dir}/builds/build_once_modules"
@@ -127,8 +128,7 @@ cd hypre/src
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
-"""
-    '''
+
 # install spdlog
 mkdir spdlog_dev && cd spdlog_dev
 git clone https://github.com/gabime/spdlog.git #git@github.com:gabime/spdlog.git
@@ -167,7 +167,7 @@ make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
 """
-'''
+
     subprocess.run(build_once_script, shell=True)
     
     assert 1==2
