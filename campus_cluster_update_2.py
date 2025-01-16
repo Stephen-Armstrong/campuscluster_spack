@@ -50,7 +50,7 @@ def update():
         os.mkdir("modulefiles")
 
     #cmake_module = f"{top_level_dir}/modulefiles/cmake"
-    cmake_module = "cmake/3.26.5" #Overwriting cmake to what is already installed on the cluster so the following install script isn't necessary but still runs.
+    #cmake_module = "cmake/3.26.5" #Overwriting cmake to what is already installed on the cluster so the following install script isn't necessary but still runs.
     
     # ICC's cmake modules are broken and stupid so build our own.
     if not os.path.isdir("cmake"):
