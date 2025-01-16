@@ -98,7 +98,8 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
 
 module purge
 module use {top_level_dir}/modulefiles
-module load {compiler_module} {mpi_module} {cmake_module}
+module --ignore_cache load {compiler_module} 
+module load {mpi_module} {cmake_module}
 
 cd builds
 mkdir {dir_name}
