@@ -95,6 +95,86 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
     dir_name = f"build_once_modules"
     build_once_dir_path = f"{top_level_dir}/builds/build_once_modules"
     build_type = f"build_once"
+    
+    build_once_modules_script = f"""
+module purge
+module use {top_level_dir}/modulefiles
+module load {compiler_module} {mpi_module} {cmake_module} {python_module}
+""" 
+    build_once_files = f"""
+cd builds
+mkdir {dir_name}
+cd {dir_name}
+"""
+    build_once_rust = f"""
+# install rust
+# set up directories for rust install files
+mkdir cargo
+mkdir multirust
+# setting these env variables installs rust locally,
+# rather than in home directory
+export CARGO_HOME=$PWD/cargo
+export RUSTUP_HOME=$PWD/multirust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+source $CARGO_HOME/env
+cd {top_level_dir}/builds/{dir_name}
+"""
+    build_once_hypre = f"""
+# install hypre
+# TODO build cuda-aware hypre when cuda enabled
+mkdir hypre_dev
+cd hypre_dev
+git clone https://github.com/hypre-space/hypre.git #git@github.com:hypre-space/hypre.git
+cd hypre/src
+./configure
+make -j{num_build_cores}
+make install
+cd {top_level_dir}/builds/{dir_name}
+"""
+
+    build_once_spdlog = f"""
+# install spdlog
+mkdir spdlog_dev && cd spdlog_dev
+git clone https://github.com/gabime/spdlog.git #git@github.com:gabime/spdlog.git
+mkdir build && cd build
+cmake ../spdlog -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type}
+make -j{num_build_cores}
+make install
+cd {top_level_dir}/builds/{dir_name}
+"""
+
+    build_once_metis = f"""
+# install metis 5
+wget https://github.com/mfem/tpls/raw/gh-pages/metis-5.1.0.tar.gz
+tar -xvf metis-5.1.0.tar.gz
+cd metis-5.1.0
+make config prefix=install
+make -j{num_build_cores}
+make install
+cd {top_level_dir}/builds/{dir_name}
+"""
+    build_once_rustbca = f"""
+# install rustbca
+git clone https://github.com/lcpp-org/RustBCA.git #git@github.com:lcpp-org/RustBCA.git
+cd RustBCA
+cargo build --release --lib -j {num_build_cores}
+mkdir include && cd include
+ln -s ../RustBCA.h .
+cd ..
+mkdir lib && cd lib
+ln -s ../target/release/liblibRustBCA.so .
+cd {top_level_dir}/builds/{dir_name}
+"""
+    build_once_hdf5 = f"""
+# install hdf5
+mkdir hdf5_dev && cd hdf5_dev
+git clone https://github.com/HDFGroup/hdf5.git #git@github.com:HDFGroup/hdf5.git
+mkdir build && cd build
+cmake ../hdf5 -DCMAKE_BUILD_TYPE={build_type} -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_ENABLE_PARALLEL=ON -DHDF5_BUILD_CPP_LIB=ON -DALLOW_UNSUPPORTED=ON -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
+make -j{num_build_cores}
+make install
+cd {top_level_dir}/builds/{dir_name}
+"""
     build_once_script = f"""
 
 module purge
@@ -167,8 +247,16 @@ make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
 """
-
-    subprocess.run(build_once_script, shell=True)
+    subprocess.run(build_once_modules_script, shell=True)
+    subprocess.run(build_once_files, shell=True)
+    subprocess.run(build_once_modules_script + build_once_rust, shell=True)
+    subprocess.run(build_once_modules_script + build_once_hypre, shell=True)
+    subprocess.run(build_once_modules_script + build_once_spdlog, shell=True)
+    subprocess.run(build_once_modules_script + build_once_metis, shell=True)
+    subprocess.run(build_once_modules_script + build_once_rustbca, shell=True)
+    subprocess.run(build_once_modules_script + build_once_hdf5, shell=True)
+    
+    #subprocess.run(build_once_script, shell=True)
     
     assert 1==2
     
