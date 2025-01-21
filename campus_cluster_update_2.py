@@ -90,8 +90,6 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
     datetime_format_length = 10
     current_datetime = current_datetime.strftime(datetime_format)
     
-    assert 1==2
-    
     dir_name = f"build_once_modules"
     build_once_dir_path = f"{top_level_dir}/builds/build_once_modules"
     build_type = f"build_once"
@@ -250,6 +248,7 @@ cd {top_level_dir}/builds/{dir_name}
     subprocess.run(build_once_modules_script, shell=True)
     subprocess.run(build_once_files, shell=True)
     subprocess.run(build_once_modules_script + build_once_rust, shell=True)
+    assert 1==2
     subprocess.run(build_once_modules_script + build_once_hypre, shell=True)
     subprocess.run(build_once_modules_script + build_once_spdlog, shell=True)
     subprocess.run(build_once_modules_script + build_once_metis, shell=True)
