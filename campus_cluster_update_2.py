@@ -245,17 +245,16 @@ make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
 """
-    subprocess.run(build_once_modules_script, shell=True)
-    subprocess.run(build_once_modules_script + build_once_files, shell=True)
-    subprocess.run(build_once_modules_script + build_once_rust, shell=True)
-    subprocess.run(build_once_modules_script + build_once_hypre, shell=True)
-    assert 1==2
-    subprocess.run(build_once_modules_script + build_once_spdlog, shell=True)
-    subprocess.run(build_once_modules_script + build_once_metis, shell=True)
-    subprocess.run(build_once_modules_script + build_once_rustbca, shell=True)
-    subprocess.run(build_once_modules_script + build_once_hdf5, shell=True)
+    #subprocess.run(build_once_modules_script, shell=True)
+    #subprocess.run(build_once_modules_script + build_once_files, shell=True)
+    #subprocess.run(build_once_modules_script + build_once_rust, shell=True)
+    #subprocess.run(build_once_modules_script + build_once_hypre, shell=True)
+    #subprocess.run(build_once_modules_script + build_once_spdlog, shell=True)
+    #subprocess.run(build_once_modules_script + build_once_metis, shell=True)
+    #subprocess.run(build_once_modules_script + build_once_rustbca, shell=True)
+    #subprocess.run(build_once_modules_script + build_once_hdf5, shell=True)
     
-    #subprocess.run(build_once_script, shell=True)
+    subprocess.run(build_once_script, shell=True)
     
     assert 1==2
     
