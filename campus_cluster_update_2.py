@@ -97,7 +97,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
     build_once_modules_script = f"""
 module purge
 module use {top_level_dir}/modulefiles
-module load {compiler_module} {mpi_module} {cmake_module} {python_module}
+module --ignore_cache load {compiler_module} {mpi_module} {cmake_module}
 """ 
     build_once_files = f"""
 cd builds
