@@ -254,7 +254,7 @@ cd {top_level_dir}/builds/{dir_name}
     #subprocess.run(build_once_modules_script + build_once_rustbca, shell=True)
     #subprocess.run(build_once_modules_script + build_once_hdf5, shell=True)
     
-    build_once_script = build_once_script + build_once_files + build_once_rust + build_once_hypre + build_once_spdlog + build_once_metis + build_once_rustbca + build_once_hdf5
+    build_once_script = build_once_modules_script + build_once_files + build_once_rust + build_once_hypre + build_once_spdlog + build_once_metis + build_once_rustbca + build_once_hdf5
     subprocess.run(build_once_script, shell=True)
     
     assert 1==2
