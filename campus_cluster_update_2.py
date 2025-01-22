@@ -24,7 +24,7 @@ cuda_module = "cuda/11.8" #11.6
 python_module = "anaconda/3"
 '''
 
-compiler_module = "gcc/13.3.0"
+compiler_module = "gcc/13.3.0 intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4"
 mpi_module = "openmpi/5.0.1-gcc-13.3.0"
 cuda_module = "cuda/12.6" #11.6
 python_module = "python/3.10.16"
@@ -50,8 +50,8 @@ def update():
     if not os.path.isdir("modulefiles"):
         os.mkdir("modulefiles")
 
-    #cmake_module = f"{top_level_dir}/modulefiles/cmake"
-    cmake_module = "intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4" #Overwriting cmake to what is already installed on the cluster so the following install script isn't necessary but still runs.
+    cmake_module = f"{top_level_dir}/modulefiles/cmake"
+    #cmake_module = "intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4" #Overwriting cmake to what is already installed on the cluster so the following install script isn't necessary but still runs.
     
     # ICC's cmake modules are broken and stupid so build our own.
     if not os.path.isdir("cmake"):
@@ -62,7 +62,7 @@ wget https://github.com/Kitware/CMake/releases/download/v3.26.5/cmake-3.26.5-lin
 sh cmake-3.26.5-linux-x86_64.sh --skip-license --exclude-subdir --prefix=install
 cd ..
         """
-        #subprocess.run(cmake_build_script, shell=True)
+        subprocess.run(cmake_build_script, shell=True)
 
         cmake_modulefile_contents = f"""#%Module1.0
 
