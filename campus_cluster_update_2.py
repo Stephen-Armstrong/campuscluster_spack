@@ -51,7 +51,7 @@ def update():
         os.mkdir("modulefiles")
 
     #cmake_module = f"{top_level_dir}/modulefiles/cmake"
-    cmake_module = "intel/compiler/2025.0.4" #Overwriting cmake to what is already installed on the cluster so the following install script isn't necessary but still runs.
+    cmake_module = "intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4" #Overwriting cmake to what is already installed on the cluster so the following install script isn't necessary but still runs.
     
     # ICC's cmake modules are broken and stupid so build our own.
     if not os.path.isdir("cmake"):
@@ -97,7 +97,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
     build_once_modules_script = f"""
 module purge
 module use {top_level_dir}/modulefiles
-module --ignore_cache load intel/tbb intel/compiler-rt intel/umf {compiler_module} {mpi_module} {cmake_module}
+module --ignore_cache load {compiler_module} {mpi_module} {cmake_module}
 """ 
     build_once_files = f"""
 cd builds
