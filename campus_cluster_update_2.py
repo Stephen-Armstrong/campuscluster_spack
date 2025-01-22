@@ -50,7 +50,8 @@ def update():
     if not os.path.isdir("modulefiles"):
         os.mkdir("modulefiles")
 
-    cmake_module = f"{top_level_dir}/modulefiles/cmake"
+    #cmake_module = f"{top_level_dir}/modulefiles/cmake"
+    cmake_module = f"cmake"
     #cmake_module = "intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4" #Overwriting cmake to what is already installed on the cluster so the following install script isn't necessary but still runs.
     
     # ICC's cmake modules are broken and stupid so build our own.
