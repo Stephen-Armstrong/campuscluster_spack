@@ -26,7 +26,7 @@ python_module = "anaconda/3"
 
 #New modules
 #Intel compiler may not be needed, but in the event that cmake doesn't work, the intel compiler can generate an basic +omp-cuda build.
-compiler_module = "gcc/13.3.0 intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4"
+compiler_module = "gcc/13.3.0"# intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4"
 mpi_module = "openmpi/5.0.1-gcc-13.3.0"
 cuda_module = "cuda/12.6" #11.6
 python_module = "python/3.10.16"
