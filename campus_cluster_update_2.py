@@ -36,8 +36,8 @@ num_build_cores = len(os.sched_getaffinity(0)) #4
 # Delete old versions of builds if the number exceeds this
 num_versions_kept = 3
 #Module Compile options for OpenMP and CUDA
-openmp_options = [True, False]
-cuda_arch_options = [None, 70, 80, 86, 90]
+openmp_options = [True]#, False]
+cuda_arch_options = [None]#, 70, 80, 86, 90]
 
 #Don't edit the following lines for normal operations
 #WHO SHOULD BE EDITING THE FOLLOWING LINES:
