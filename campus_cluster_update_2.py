@@ -296,33 +296,6 @@ cd {top_level_dir}/builds/{dir_name}
                     kokkos_cmake_cmd += f" -DKokkos_ARCH_HOPPER{cuda_arch_option}=ON"
             kokkos_cmake_cmd += f" -DKokkos_ENABLE_OPENMP={'ON' if openmp_option else 'OFF'}"
             
-            if openmp_options:
-                build_dependent_hdf5_mpicc = module_load_script + f"""
-# install hdf5
-mkdir hdf5_dev && cd hdf5_dev
-git clone https://github.com/HDFGroup/hdf5.git #git@github.com:HDFGroup/hdf5.git
-mkdir build && cd build
-export CC=mpicc
-export HDF5_MPI="ON"
-mpicc ./configure --enable-parallel --enable-shared
-cmake ../hdf5 -DCMAKE_BUILD_TYPE={build_type} -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_ENABLE_PARALLEL=ON -DHDF5_BUILD_CPP_LIB=ON -DHDF5_ALLOW_UNSUPPORTED=ON -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
-make -j{num_build_cores}
-make install
-cd {top_level_dir}/builds/{dir_name}
-"""
-            else:
-                build_dependent_hdf5_mpicc = module_load_script + f"""
-# install hdf5
-mkdir hdf5_dev && cd hdf5_dev
-git clone https://github.com/HDFGroup/hdf5.git #git@github.com:HDFGroup/hdf5.git
-mkdir build && cd build
-cmake ../hdf5 -DCMAKE_BUILD_TYPE={build_type} -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_ENABLE_PARALLEL=ON -DHDF5_BUILD_CPP_LIB=ON -DHDF5_ALLOW_UNSUPPORTED=ON -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
-make -j{num_build_cores}
-make install
-cd {top_level_dir}/builds/{dir_name}
-"""
-                
-            
             hypre_configure_cmd = f"./configure --enable-shared --prefix={build_dependent_dir_path}/hypre_dev/install"
             if build_type == "Debug":
                 hypre_configure_cmd += f" --enable-debug"
@@ -368,6 +341,32 @@ module load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_e
 
 """
             subprocess.run(module_load_script, shell=True)
+            
+            if openmp_options:
+                build_dependent_hdf5_mpicc = module_load_script + f"""
+# install hdf5
+mkdir hdf5_dev && cd hdf5_dev
+git clone https://github.com/HDFGroup/hdf5.git #git@github.com:HDFGroup/hdf5.git
+mkdir build && cd build
+export CC=mpicc
+export HDF5_MPI="ON"
+mpicc ./configure --enable-parallel --enable-shared
+cmake ../hdf5 -DCMAKE_BUILD_TYPE={build_type} -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_ENABLE_PARALLEL=ON -DHDF5_BUILD_CPP_LIB=ON -DHDF5_ALLOW_UNSUPPORTED=ON -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
+make -j{num_build_cores}
+make install
+cd {top_level_dir}/builds/{dir_name}
+"""
+            else:
+                build_dependent_hdf5_mpicc = module_load_script + f"""
+# install hdf5
+mkdir hdf5_dev && cd hdf5_dev
+git clone https://github.com/HDFGroup/hdf5.git #git@github.com:HDFGroup/hdf5.git
+mkdir build && cd build
+cmake ../hdf5 -DCMAKE_BUILD_TYPE={build_type} -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_ENABLE_PARALLEL=ON -DHDF5_BUILD_CPP_LIB=ON -DHDF5_ALLOW_UNSUPPORTED=ON -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
+make -j{num_build_cores}
+make install
+cd {top_level_dir}/builds/{dir_name}
+"""
             
             build_dependent_script_kokkos = module_load_script + f"""
 cd builds
