@@ -339,7 +339,7 @@ cd {top_level_dir}/builds/{dir_name}
             module_load_script = f"""
 module purge
 module use {top_level_dir}/modulefiles
-module load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
+module --ignore_cache load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
 
 """
             subprocess.run(module_load_script, shell=True)
