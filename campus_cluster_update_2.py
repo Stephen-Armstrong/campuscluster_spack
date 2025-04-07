@@ -423,8 +423,8 @@ make install
 cd {top_level_dir}/builds/{dir_name}
 
 """
-            subprocess.run(build_dependent_hdf5_mpicc, shell=True)
             subprocess.run(build_dependent_script_kokkos, shell=True)
+            subprocess.run(build_dependent_hdf5_mpicc, shell=True)
             #assert 1==2
             #subprocess.run(build_dependent_script_hypre, shell=True) #Tried to make hypre cuda aware. It didn't work before APS-DPP.
             #assert 1==2
