@@ -167,7 +167,7 @@ mkdir lib && cd lib
 ln -s ../target/release/liblibRustBCA.so .
 cd {top_level_dir}/builds/{dir_name}
 """
-'''HDF5 is no longer build once, it's build depends on if OpenMPI is active
+    '''HDF5 is no longer build once, it's build depends on if OpenMPI is active
     build_once_hdf5 = f"""
 # install hdf5
 mkdir hdf5_dev && cd hdf5_dev
@@ -180,7 +180,6 @@ cd {top_level_dir}/builds/{dir_name}
 """
 '''
     build_once_script = f"""
-
 module purge
 module use {top_level_dir}/modulefiles
 module --ignore_cache load {compiler_module} 
