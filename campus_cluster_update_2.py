@@ -94,7 +94,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
     datetime_format_length = 10
     current_datetime = current_datetime.strftime(datetime_format)
     
-    assert 1==2
+    #assert 1==2
     
     dir_name = f"build_once_modules"
     build_once_dir_path = f"{top_level_dir}/builds/build_once_modules"
