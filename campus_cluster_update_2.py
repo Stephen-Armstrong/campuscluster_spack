@@ -345,6 +345,7 @@ module load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_e
             if openmp_options:
                 build_dependent_hdf5_mpicc = module_load_script + f"""
 # install hdf5
+cd {top_level_dir}/builds/{dir_name}
 mkdir hdf5_dev && cd hdf5_dev
 git clone https://github.com/HDFGroup/hdf5.git #git@github.com:HDFGroup/hdf5.git
 mkdir build && cd build
@@ -359,6 +360,7 @@ cd {top_level_dir}/builds/{dir_name}
             else:
                 build_dependent_hdf5_mpicc = module_load_script + f"""
 # install hdf5
+cd {top_level_dir}/builds/{dir_name}
 mkdir hdf5_dev && cd hdf5_dev
 git clone https://github.com/HDFGroup/hdf5.git #git@github.com:HDFGroup/hdf5.git
 mkdir build && cd build
@@ -485,7 +487,7 @@ setenv RUSTBCA_ROOT {{{build_once_dir_path}/RustBCA}}
 prepend-path --delim {{:}} PATH {{{build_once_dir_path}/hdf5_dev/install/bin}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/hdf5_dev/install/.}}
 append-path --delim {{:}} LD_LIBRARY_PATH {{{build_once_dir_path}/hdf5_dev/install/lib}}
-setenv HDF5_ROOT {{{build_once_dir_path}/hdf5_dev/install}}
+setenv HDF5_ROOT {{{build_dependent_dir_path}/hdf5_dev/install}}
 
             """
             
