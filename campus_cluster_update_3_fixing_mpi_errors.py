@@ -211,7 +211,7 @@ def build_dependent():
             if cuda_enabled:
                 hypre_configure_cmd += f" --with-kokkos --with-cuda --with-gpu-arch={cuda_arch_option}"
             
-            mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR={build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR={build_once_dir_path}/hypre_dev/hypre/src/hypre -DMFEM_USE_MPI=YES"
+            mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR={build_dependent_dir_path}/metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR={build_dependent_dir_path}/hypre_dev/hypre/src/hypre -DMFEM_USE_MPI=YES"
             if cuda_enabled:
                 mfem_cmake_cmd += f" -DMFEM_USE_CUDA=YES -DCUDA_ARCH=sm_{cuda_arch_option}"
             elif openmp_option:
