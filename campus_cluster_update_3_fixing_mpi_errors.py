@@ -1,5 +1,5 @@
 '''
-Created on Sep 19, 2024
+Created on Apr 9, 2025
 
 @author: Stephen Armstrong
 '''
@@ -15,29 +15,19 @@ import multiprocessing
 top_level_dir = os.getcwd() #f"/projects/illinois/eng/npre/dcurreli" #
 os.chdir(top_level_dir)
 
-# Only support one compiler/MPI/CUDA combo at a time.
-# This is mostly because only one combo works on ICC at a time...
-''' #Old modules for RHL 7.2 keeping around for reference
-compiler_module = "gcc/8.2.0"
-mpi_module = "openmpi/4.1.4-gcc-8.2.0"
-cuda_module = "cuda/11.8" #11.6
-python_module = "anaconda/3"
-'''
-
 #New modules
-#Intel compiler may not be needed, but in the event that cmake doesn't work, the intel compiler can generate an basic +omp-cuda build.
-compiler_module = "gcc/13.3.0"# intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4"
+compiler_module = "gcc/13.3.0"
 mpi_module = "openmpi/5.0.1-gcc-13.3.0"
-cuda_module = "cuda/12.6" #11.6
+cuda_module = "cuda/12.6"
 python_module = "python/3.11.11"
 
-# ICC currently restricts compiling to a certain number of cores
+# ICC can use as many cores as we want if run in slurm
 num_build_cores = len(os.sched_getaffinity(0)) #4
 # Delete old versions of builds if the number exceeds this
 num_versions_kept = 3
 #Module Compile options for OpenMP and CUDA
-openmp_options = [True]#, False]
-cuda_arch_options = [None, 70, 80, 86, 90]
+openmp_options = [True]#, False] #why would you ever not want openmp? idk
+cuda_arch_options = [None, 70, 80, 86, 90] # yeah, you might not want cuda. 
 
 #Don't edit the following lines for normal operations
 #WHO SHOULD BE EDITING THE FOLLOWING LINES:
@@ -47,16 +37,24 @@ cuda_arch_options = [None, 70, 80, 86, 90]
 #Edit anything after this comment at your own risk.
 build_types_arr = ["Release", "Debug"]
 
-def update():
+
+# global variables for stuff
+cmake_module = f"cmake"    
+
+current_datetime = datetime.datetime.now()
+datetime_format = '%Y-%m-%d'
+datetime_format_length = 10
+current_datetime = current_datetime.strftime(datetime_format)
+
+def make_build_directories():
     if not os.path.isdir("builds"):
         os.mkdir("builds")
     if not os.path.isdir("modulefiles"):
         os.mkdir("modulefiles")
-
-    #cmake_module = f"{top_level_dir}/modulefiles/cmake"
-    cmake_module = f"cmake"
-    #cmake_module = "intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4" #Overwriting cmake to what is already installed on the cluster so the following install script isn't necessary but still runs.
     
+    return True
+
+def make_cmake_module():
     # ICC's cmake modules are broken and stupid so build our own.
     if not os.path.isdir("cmake"):
         cmake_build_script = f"""
@@ -89,13 +87,9 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
         with open(f"{top_level_dir}/modulefiles/cmake", 'w') as cmake_modulefile:
             cmake_modulefile.write(cmake_modulefile_contents)
     
-    current_datetime = datetime.datetime.now()
-    datetime_format = '%Y-%m-%d'
-    datetime_format_length = 10
-    current_datetime = current_datetime.strftime(datetime_format)
-    
-    #assert 1==2
-    
+    return True
+
+def build_once_modules():
     dir_name = f"build_once_modules"
     build_once_dir_path = f"{top_level_dir}/builds/build_once_modules"
     build_type = f"build_once"
@@ -122,7 +116,7 @@ export RUSTUP_HOME=$PWD/multirust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 source $CARGO_HOME/env
 cd {top_level_dir}/builds/{dir_name}
-"""
+""" #Rust does depend on MPI
     build_once_hypre = f"""
 # install hypre
 # TODO build cuda-aware hypre when cuda enabled
@@ -134,7 +128,7 @@ cd hypre/src
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
-"""
+""" #Hypre can depend on mpi and CUDA
 
     build_once_spdlog = f"""
 # install spdlog
@@ -145,7 +139,7 @@ cmake ../spdlog -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
-"""
+""" #probably can depend on mpi 
 
     build_once_metis = f"""
 # install metis 5
@@ -156,7 +150,7 @@ make config prefix=install
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
-"""
+""" #maybe but this one is a ghost online, so probably? 
     build_once_rustbca = f"""
 # install rustbca
 git clone https://github.com/lcpp-org/RustBCA.git #git@github.com:lcpp-org/RustBCA.git
@@ -168,13 +162,14 @@ cd ..
 mkdir lib && cd lib
 ln -s ../target/release/liblibRustBCA.so .
 cd {top_level_dir}/builds/{dir_name}
-""" 
+"""  #Depends on rust so it can depend on mpi/cuda
     #build_once_script = build_once_modules_script + build_once_files + build_once_rust + build_once_hypre + build_once_spdlog + build_once_metis + build_once_rustbca + build_once_hdf5
     build_once_script = build_once_modules_script + build_once_files + build_once_rust + build_once_hypre + build_once_spdlog + build_once_metis + build_once_rustbca
     subprocess.run(build_once_script, shell=True)
     
-    #assert 1==2
-    
+    return True
+
+def build_dependent():
     for openmp_option, cuda_arch_option in itertools.product(openmp_options, cuda_arch_options):
         option_spec_string = f"{'+' if openmp_option else '~'}openmp-cuda-arch-{str(cuda_arch_option)}"
         # Want to build both Debug and Release versions of hpic2deps,
@@ -184,7 +179,9 @@ cd {top_level_dir}/builds/{dir_name}
             dir_name = f"hpic2deps-{option_spec_string}-{build_type}-{current_datetime}"
             
             build_dependent_dir_path = f"{top_level_dir}/builds/{dir_name}"
-
+            
+            build_depepndent_dirs = f"cd builds; mkdir {dir_name}; cd {dir_name}"
+            
             # Remove the build directories for this datetime if it already
             # exists, i.e. if we have already updated today.
             if os.path.exists(f"builds/{dir_name}"):
@@ -213,69 +210,29 @@ cd {top_level_dir}/builds/{dir_name}
                 hypre_configure_cmd += f" --with-openmp"
             if cuda_enabled:
                 hypre_configure_cmd += f" --with-kokkos --with-cuda --with-gpu-arch={cuda_arch_option}"
-                """
-            hypre_cmake_cmd = f"cmake ../hypre/src/ -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DKokkos_DIR={build_dependent_dir_path}/kokkos_dev/install -DHYPRE_BUILD_EXAMPLES=ON -DHYPRE_ENABLE_SHARED=ON"
-            if openmp_option:
-                hypre_cmake_cmd += f" -DHYPRE_WITH_OPENMP=ON"
-            if cuda_enabled:
-                hypre_cmake_cmd += f" -DHYPRE_WITH_KOKKOS=ON \
--DKokkos_ROOT={build_dependent_dir_path}/kokkos_dev/install \
--DHYPRE_WITH_CUDA=ON \
--DHYPRE_CUDA_SM={cuda_arch_option} \
--DHYPRE_ENABLE_GPU_PROFILING=ON \
--DHYPRE_ENABLE_CUSPARSE=ON \
--DHYPRE_ENABLE_CUBLAS=ON \
--DHYPRE_ENABLE_CURAND=ON \
--DHYPRE_ENABLE_DEVICE_POOL=ON \
--DHYPRE_ENABLE_UNIFIED_MEMORY=ON"
-            """
+            
             mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR={build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR={build_once_dir_path}/hypre_dev/hypre/src/hypre -DMFEM_USE_MPI=YES"
             if cuda_enabled:
                 mfem_cmake_cmd += f" -DMFEM_USE_CUDA=YES -DCUDA_ARCH=sm_{cuda_arch_option}"
             elif openmp_option:
                 mfem_cmake_cmd += f" -DMFEM_USE_OPENMP=YES"
             
+            hdf5_mpicc_cmd = f""
+            if openmp_options:
+                hdf5_mpicc_cmd += f"""
+export CC=mpicc
+export HDF5_MPI="ON"
+mpicc ./configure --enable-parallel --enable-shared
+"""
+            #Starting to load modules with the changes due to ompi and cuda
             module_load_script = f"""
 module purge
 module use {top_level_dir}/modulefiles
 module --ignore_cache load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
-
 """
             subprocess.run(module_load_script, shell=True)
             
-            if openmp_options:
-                build_dependent_hdf5_mpicc = module_load_script + f"""
-# install hdf5
-cd {top_level_dir}/builds/{dir_name}
-mkdir hdf5_dev && cd hdf5_dev
-git clone https://github.com/HDFGroup/hdf5.git #git@github.com:HDFGroup/hdf5.git
-mkdir build && cd build
-export CC=mpicc
-export HDF5_MPI="ON"
-mpicc ./configure --enable-parallel --enable-shared
-cmake ../hdf5 -DCMAKE_BUILD_TYPE={build_type} -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_ENABLE_PARALLEL=ON -DHDF5_BUILD_CPP_LIB=ON -DHDF5_ALLOW_UNSUPPORTED=ON -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
-make -j{num_build_cores}
-make install
-cd {top_level_dir}/builds/{dir_name}
-"""
-            else:
-                build_dependent_hdf5_mpicc = module_load_script + f"""
-# install hdf5
-cd {top_level_dir}/builds/{dir_name}
-mkdir hdf5_dev && cd hdf5_dev
-git clone https://github.com/HDFGroup/hdf5.git #git@github.com:HDFGroup/hdf5.git
-mkdir build && cd build
-cmake ../hdf5 -DCMAKE_BUILD_TYPE={build_type} -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_ENABLE_PARALLEL=ON -DHDF5_BUILD_CPP_LIB=ON -DHDF5_ALLOW_UNSUPPORTED=ON -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
-make -j{num_build_cores}
-make install
-cd {top_level_dir}/builds/{dir_name}
-"""
-            
             build_dependent_script_kokkos = module_load_script + f"""
-cd builds
-mkdir {dir_name}
-cd {dir_name}
-
 # install kokkos
 mkdir kokkos_dev && cd kokkos_dev
 git clone https://github.com/kokkos/kokkos.git #git@github.com:kokkos/kokkos.git
@@ -284,7 +241,31 @@ mkdir build && cd build
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
-
+"""
+            build_dependent_hdf5_mpicc = module_load_script + f"""
+# install hdf5
+cd {top_level_dir}/builds/{dir_name}
+mkdir hdf5_dev && cd hdf5_dev
+git clone https://github.com/HDFGroup/hdf5.git #git@github.com:HDFGroup/hdf5.git
+mkdir build && cd build
+{hdf5_mpicc_cmd}
+cmake ../hdf5 -DCMAKE_BUILD_TYPE={build_type} -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_ENABLE_PARALLEL=ON -DHDF5_BUILD_CPP_LIB=ON -DHDF5_ALLOW_UNSUPPORTED=ON -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
+make -j{num_build_cores}
+make install
+cd {top_level_dir}/builds/{dir_name}
+"""
+            build_dependent_script_rust = module_load_script + f"""
+# install rust
+# set up directories for rust install files
+mkdir cargo
+mkdir multirust
+# setting these env variables installs rust locally,
+# rather than in home directory
+export CARGO_HOME=$PWD/cargo
+export RUSTUP_HOME=$PWD/multirust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+source $CARGO_HOME/env
+cd {top_level_dir}/builds/{dir_name}
 """
             build_dependent_script_hypre = module_load_script + f"""
 module load kokkos
@@ -302,6 +283,37 @@ make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
 """
+            build_dependent_spdlog = module_load_script + f"""
+# install spdlog
+mkdir spdlog_dev && cd spdlog_dev
+git clone https://github.com/gabime/spdlog.git #git@github.com:gabime/spdlog.git
+mkdir build && cd build
+cmake ../spdlog -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type}
+make -j{num_build_cores}
+make install
+cd {top_level_dir}/builds/{dir_name}
+"""
+            build_dependent_metis = module_load_script + f"""
+# install metis 5
+wget https://github.com/mfem/tpls/raw/gh-pages/metis-5.1.0.tar.gz
+tar -xvf metis-5.1.0.tar.gz
+cd metis-5.1.0
+make config prefix=install
+make -j{num_build_cores}
+make install
+cd {top_level_dir}/builds/{dir_name}
+"""
+            build_dependent_script_mfem = module_load_script + f"""
+cd {top_level_dir}/builds/{dir_name}
+# install mfem
+mkdir mfem_dev && cd mfem_dev
+git clone https://github.com/mfem/mfem.git #git@github.com:mfem/mfem.git
+mkdir build && cd build
+{mfem_cmake_cmd}
+make -j{num_build_cores}
+make install
+cd {top_level_dir}/builds/{dir_name}
+"""
             build_dependent_script_pumimbbl = module_load_script + f"""
 cd {top_level_dir}/builds/{dir_name}
 # install pumimbbl
@@ -313,32 +325,32 @@ make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
 """
-
-            build_dependent_script_mfem = module_load_script + f"""
+            build_dependent_script_rustbca = module_load_script + f"""
+# install rustbca
+git clone https://github.com/lcpp-org/RustBCA.git #git@github.com:lcpp-org/RustBCA.git
+cd RustBCA
+cargo build --release --lib -j {num_build_cores}
+mkdir include && cd include
+ln -s ../RustBCA.h .
+cd ..
+mkdir lib && cd lib
+ln -s ../target/release/liblibRustBCA.so .
 cd {top_level_dir}/builds/{dir_name}
-# install mfem
-mkdir mfem_dev && cd mfem_dev
-git clone https://github.com/mfem/mfem.git #git@github.com:mfem/mfem.git
-mkdir build && cd build
-{mfem_cmake_cmd}
-make -j{num_build_cores}
-make install
-cd {top_level_dir}/builds/{dir_name}
-
 """
+            subprocess.run(build_depepndent_dirs, shell=True)
             subprocess.run(build_dependent_script_kokkos, shell=True)
             subprocess.run(build_dependent_hdf5_mpicc, shell=True)
-            #assert 1==2
-            #subprocess.run(build_dependent_script_hypre, shell=True) #Tried to make hypre cuda aware. It didn't work before APS-DPP.
-            #assert 1==2
-            subprocess.run(build_dependent_script_pumimbbl, shell=True)
+            subprocess.run(build_dependent_script_rust, shell=True)
+            subprocess.run(build_dependent_script_hypre, shell=True)
+            subprocess.run(build_dependent_spdlog, shell=True)
+            subprocess.run(build_dependent_metis, shell=True)
             subprocess.run(build_dependent_script_mfem, shell=True)
-            #assert 1 == 2 
+            subprocess.run(build_dependent_script_pumimbbl, shell=True)
+            subprocess.run(build_dependent_script_rustbca, shell=True)
             
-            
-
-            # I wrote this modulefile based on the modulefiles generated by
+            # Logan wrote this modulefile based on the modulefiles generated by
             # spack for each of these packages.
+            # good luck understanding it, I don't - Stephen
             modulefile_contents = f"""#%Module1.0
 
 module-whatis {{Dependencies for hPIC2 building. }}
@@ -367,31 +379,31 @@ if {{![info exists ::env(LMOD_VERSION_MAJOR)]}} {{
 }}
 
 
-prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/hypre_dev/hypre/src/hypre/.}}
-setenv HYPRE_ROOT {{{build_once_dir_path}/hypre_dev/hypre/src/hypre}}
-#append-path --delim {{:}} LD_LIBRARY_PATH {{{build_once_dir_path}/hypre_dev/install/lib64}}
-#setenv HYPRE_DIR {{{build_once_dir_path}/hypre_dev/install}}
-#setenv HYPRE_INCLUDE_DIRS {{{build_once_dir_path}/hypre_dev/install/include}}
-#setenv HYPRE_LIBRARY_DIRS {{{build_once_dir_path}/hypre_dev/install/lib64}}
+prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/hypre_dev/hypre/src/hypre/.}}
+setenv HYPRE_ROOT {{{build_dependent_dir_path}/hypre_dev/hypre/src/hypre}}
+#append-path --delim {{:}} LD_LIBRARY_PATH {{{build_dependent_dir_path}/hypre_dev/install/lib64}}
+#setenv HYPRE_DIR {{{build_dependent_dir_path}/hypre_dev/install}}
+#setenv HYPRE_INCLUDE_DIRS {{{build_dependent_dir_path}/hypre_dev/install/include}}
+#setenv HYPRE_LIBRARY_DIRS {{{build_dependent_dir_path}/hypre_dev/install/lib64}}
 
-prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/spdlog_dev/install/.}}
+prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/spdlog_dev/install/.}}
 prepend-path --delim {{:}} PATH {{{build_dependent_dir_path}/kokkos_dev/install/bin}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/kokkos_dev/install/.}}
 setenv KOKKOS_ROOT {{{build_dependent_dir_path}/kokkos_dev/install}}
-prepend-path --delim {{:}} PATH {{{build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install/bin}}
-prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install/.}}
-setenv METIS_ROOT {{{build_once_dir_path}/metis-5.1.0/build/Linux-x86_64/install}}
+prepend-path --delim {{:}} PATH {{{build_dependent_dir_path}/metis-5.1.0/build/Linux-x86_64/install/bin}}
+prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/metis-5.1.0/build/Linux-x86_64/install/.}}
+setenv METIS_ROOT {{{build_dependent_dir_path}/metis-5.1.0/build/Linux-x86_64/install}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/mfem_dev/install/.}}
 setenv MFEM_ROOT {{{build_dependent_dir_path}/mfem_dev/install}}
 setenv PUMIMBBL_ROOT {{{build_dependent_dir_path}/pumiMBBL_dev/install}}
-setenv RUSTBCA_ROOT {{{build_once_dir_path}/RustBCA}}
-prepend-path --delim {{:}} PATH {{{build_once_dir_path}/hdf5_dev/install/bin}}
-prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_once_dir_path}/hdf5_dev/install/.}}
-append-path --delim {{:}} LD_LIBRARY_PATH {{{build_once_dir_path}/hdf5_dev/install/lib}}
+setenv RUSTBCA_ROOT {{{build_dependent_dir_path}/RustBCA}}
+prepend-path --delim {{:}} PATH {{{build_dependent_dir_path}/hdf5_dev/install/bin}}
+prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dependent_dir_path}/hdf5_dev/install/.}}
+append-path --delim {{:}} LD_LIBRARY_PATH {{{build_dependent_dir_path}/hdf5_dev/install/lib}}
 setenv HDF5_ROOT {{{build_dependent_dir_path}/hdf5_dev/install}}
 
             """
-            
+
             modulefile_dir = f"{top_level_dir}/modulefiles/hpic2deps/{option_spec_string}/{build_type}"
             if not os.path.exists(modulefile_dir):
                 os.makedirs(modulefile_dir)
@@ -434,8 +446,8 @@ setenv HDF5_ROOT {{{build_dependent_dir_path}/hdf5_dev/install}}
             shutil.rmtree(f"builds/{dir_name}")
 
         deps_module = f"hpic2deps/{option_spec_string}/Release/latest"
-
-        build_script = f"""
+        
+        build_dependent_hpic2_script = f"""
 module purge
 module use {top_level_dir}/modulefiles
 module load {deps_module}
@@ -452,8 +464,7 @@ make -j{num_build_cores}
 
         """
 
-        subprocess.run(build_script, shell=True)
-
+        subprocess.run(build_dependent_hpic2_script, shell=True)
 
         # I wrote this modulefile based on the modulefiles generated by
         # spack for each of these packages.
@@ -509,14 +520,23 @@ prepend-path --delim {{:}} PATH {{{top_level_dir}/builds/{dir_name}/build}}
         # Update the "latest" modulefile
         os.link(f"{modulefile_dir}/{current_datetime}", f"{modulefile_dir}/latest")
 
+    return True
+
+def update():
+    print(f"Updating hpic2 and dependencies on ICC...")
+    make_build_directories()
+    make_cmake_module()
+    #build_once_modules() # There are no dependencies that are not build dependent
+    build_dependent()
+    
     print(f"""
 Done! If you haven't already, update your module search path with
 
 module use {top_level_dir}/modulefiles
     """)
+    
     return True
-
-
+    
 if __name__ == "__main__":
     help_message = f"""
 Hi! This is a script to update hpic2 and dependencies on ICC.
@@ -524,7 +544,7 @@ Hi! This is a script to update hpic2 and dependencies on ICC.
 You probably wanna
 
 module purge
-module load anaconda/3
+module load python
 
 before using this. This script will build the most recent versions of hpic2
 and its dependencies, creating modulefiles for all of them, and deleting old
@@ -534,10 +554,20 @@ a fresh build. You may run this for the first time in an empty directory.
 Afterward, update by running from inside the same directory.
 Usage:
 
-python3 {os.path.basename(__file__)} update
+python3 {os.path.basename(__file__)} 
+python3 {os.path.basename(__file__)} "openmp options"
     """
 
-    if len(sys.argv) == 2 and sys.argv[1] == "update":
+    #if len(sys.argv) == 2 and sys.argv[1] == "update":
+    #    update()
+    #elif len(sys.argv) == 3 and sys.argv[1] == "update":
+    
+    if len(sys.argv) == 2:
         update()
+    elif len(sys.argv) == 3: # not tested yet
+        openmp_option = sys.argv[1]
+    elif len(sys.argv) == 4: # also not tested yet 
+        openmp_option = sys.argv[1]
+        cuda_arch_option = sys.argv[2]
     else:
         print(help_message)
