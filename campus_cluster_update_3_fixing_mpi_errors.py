@@ -204,8 +204,8 @@ def build_dependent(openmp_option, cuda_arch_option, build_type):
         hypre_configure_cmd += f" --enable-debug"
     if openmp_option:
         hypre_configure_cmd += f" --with-openmp"
-    if cuda_enabled:
-        hypre_configure_cmd += f" --with-kokkos --with-cuda --with-gpu-arch={cuda_arch_option}"
+    #if cuda_enabled:
+    #    hypre_configure_cmd += f" --with-kokkos --with-cuda --with-gpu-arch={cuda_arch_option}"
     
     mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR={build_dependent_dir_path}/metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR={build_dependent_dir_path}/hypre_dev/hypre/src/hypre -DMFEM_USE_MPI=YES"
     if cuda_enabled:
@@ -274,7 +274,7 @@ mkdir hypre_dev
 cd hypre_dev
 git clone https://github.com/hypre-space/hypre.git #git@github.com:hypre-space/hypre.git
 cd hypre/src
-{hdf5_mpicc_cmd} #./configure
+{hypre_configure_cmd} #./configure
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
