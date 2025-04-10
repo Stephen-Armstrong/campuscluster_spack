@@ -48,14 +48,14 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
 
     # Only support one compiler/MPI/CUDA combo at a time.
     # This is mostly because only one combo works on ICC at a time...
-    compiler_module = "gcc/8.2.0"
-    mpi_module = "openmpi/4.1.4-gcc-8.2.0"
-    cuda_module = "cuda/11.6"
+    compiler_module = "gcc/13.3.0"# intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4"
+    mpi_module = "openmpi/5.0.1-gcc-13.3.0"
+    cuda_module = "cuda/12.6" #11.6
+    python_module = "python/3.11.11"
     cmake_module = f"{top_level_dir}/modulefiles/cmake"
-    python_module = "anaconda/3"
 
     # ICC currently restricts compiling to a certain number of cores
-    num_build_cores = 4
+    num_build_cores = len(os.sched_getaffinity(0))
 
     # Delete old versions of builds if the number exceeds this
     num_versions_kept = 3
@@ -65,8 +65,8 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
     datetime_format_length = 10
     current_datetime = current_datetime.strftime(datetime_format)
 
-    openmp_options = [True, False]
-    cuda_arch_options = [None, 70, 86]
+    openmp_options = [True]#, False]
+    cuda_arch_options = [None, 70, 86, 90]
     for openmp_option, cuda_arch_option in itertools.product(openmp_options, cuda_arch_options):
         option_spec_string = f"{'+' if openmp_option else '~'}openmp-cuda-arch-{str(cuda_arch_option)}"
         # Want to build both Debug and Release versions of hpic2deps,
@@ -92,6 +92,8 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
                     kokkos_cmake_cmd += f" -DKokkos_ARCH_VOLTA{cuda_arch_option}=ON"
                 elif cuda_arch_option==80 or cuda_arch_option==86:
                     kokkos_cmake_cmd += f" -DKokkos_ARCH_AMPERE{cuda_arch_option}=ON"
+                elif cuda_arch_option==90:
+                    kokkos_cmake_cmd += f" -DKokkos_ARCH_HOPPER{cuda_arch_option}=ON"
             kokkos_cmake_cmd += f" -DKokkos_ENABLE_OPENMP={'ON' if openmp_option else 'OFF'}"
 
             mfem_cmake_cmd = f"cmake ../mfem -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DMETIS_DIR=../../metis-5.1.0/build/Linux-x86_64/install -DHYPRE_DIR=../../hypre_dev/hypre/src/hypre -DMFEM_USE_MPI=YES"
