@@ -264,7 +264,7 @@ source $CARGO_HOME/env
 cd {top_level_dir}/builds/{dir_name}
 """
     build_dependent_script_hypre = module_load_script + f"""
-module load kokkos
+module --ignore_cache load kokkos
 cd {top_level_dir}/builds/{dir_name}
 # install hypre
 # TODO build cuda-aware hypre when cuda enabled
