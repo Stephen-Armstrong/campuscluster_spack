@@ -36,7 +36,7 @@ cuda_arch_options = [None, 90]#, 70, 80, 86, 90] # yeah, you might not want cuda
 #     Andrew Liu
 #     Logan Meredith
 #Edit anything after this comment at your own risk.
-build_types_arr = ["Release", "Debug"]
+build_types_arr = ["Release"]#, "Debug"]
 
 
 # global variables for stuff
@@ -274,7 +274,7 @@ mkdir hypre_dev
 cd hypre_dev
 git clone https://github.com/hypre-space/hypre.git #git@github.com:hypre-space/hypre.git
 cd hypre/src
-./configure
+{hdf5_mpicc_cmd} #./configure
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
