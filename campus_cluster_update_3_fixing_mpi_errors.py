@@ -230,6 +230,7 @@ module --ignore_cache load {compiler_module} {mpi_module} {cmake_module} {cuda_m
     
     build_dependent_script_kokkos = module_load_script + f"""
 # install kokkos
+cd {top_level_dir}/builds/{dir_name}
 mkdir kokkos_dev && cd kokkos_dev
 git clone https://github.com/kokkos/kokkos.git #git@github.com:kokkos/kokkos.git
 mkdir build && cd build
@@ -253,6 +254,7 @@ cd {top_level_dir}/builds/{dir_name}
     build_dependent_script_rust = module_load_script + f"""
 # install rust
 # set up directories for rust install files
+cd {top_level_dir}/builds/{dir_name}
 mkdir cargo
 mkdir multirust
 # setting these env variables installs rust locally,
@@ -279,6 +281,7 @@ cd {top_level_dir}/builds/{dir_name}
 """
     build_dependent_spdlog = module_load_script + f"""
 # install spdlog
+cd {top_level_dir}/builds/{dir_name}
 mkdir spdlog_dev && cd spdlog_dev
 git clone https://github.com/gabime/spdlog.git #git@github.com:gabime/spdlog.git
 mkdir build && cd build
@@ -289,6 +292,7 @@ cd {top_level_dir}/builds/{dir_name}
 """
     build_dependent_metis = module_load_script + f"""
 # install metis 5
+cd {top_level_dir}/builds/{dir_name}
 wget https://github.com/mfem/tpls/raw/gh-pages/metis-5.1.0.tar.gz
 tar -xvf metis-5.1.0.tar.gz
 cd metis-5.1.0
@@ -298,8 +302,8 @@ make install
 cd {top_level_dir}/builds/{dir_name}
 """
     build_dependent_script_mfem = module_load_script + f"""
-cd {top_level_dir}/builds/{dir_name}
 # install mfem
+cd {top_level_dir}/builds/{dir_name}
 mkdir mfem_dev && cd mfem_dev
 git clone https://github.com/mfem/mfem.git #git@github.com:mfem/mfem.git
 mkdir build && cd build
@@ -321,6 +325,7 @@ cd {top_level_dir}/builds/{dir_name}
 """
     build_dependent_script_rustbca = module_load_script + f"""
 # install rustbca
+cd {top_level_dir}/builds/{dir_name}
 git clone https://github.com/lcpp-org/RustBCA.git #git@github.com:lcpp-org/RustBCA.git
 cd RustBCA
 cargo build --release --lib -j {num_build_cores}
