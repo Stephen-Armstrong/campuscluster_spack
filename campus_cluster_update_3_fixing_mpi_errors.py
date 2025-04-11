@@ -326,6 +326,7 @@ cd {top_level_dir}/builds/{dir_name}
     build_dependent_script_rustbca = module_load_script + f"""
 # install rustbca
 cd {top_level_dir}/builds/{dir_name}
+source {top_level_dir}/builds/{dir_name}/cargo/env
 git clone https://github.com/lcpp-org/RustBCA.git #git@github.com:lcpp-org/RustBCA.git
 cd RustBCA
 cargo build --release --lib -j {num_build_cores}
