@@ -19,8 +19,8 @@ def update():
         cmake_build_script = f"""
 mkdir cmake && cd cmake
 mkdir install
-wget https://github.com/Kitware/CMake/releases/download/v3.26.3/cmake-3.26.3-linux-x86_64.sh
-sh cmake-3.26.3-linux-x86_64.sh --skip-license --exclude-subdir --prefix=install
+wget https://github.com/Kitware/CMake/releases/download/v3.26.5/cmake-3.26.5-linux-x86_64.sh
+sh cmake-3.26.5-linux-x86_64.sh --skip-license --exclude-subdir --prefix=install
 cd ..
         """
         subprocess.run(cmake_build_script, shell=True)
@@ -83,7 +83,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
             cuda_enabled = cuda_arch_option != None
             # May want to enable Broadwell optimizations, but not sure
             # if that can be used on all of ICC.
-            kokkos_cmake_cmd = f"cmake ../kokkos -DKokkos_ENABLE_SERIAL=ON -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type}"
+            kokkos_cmake_cmd = f"cmake ../kokkos -DKokkos_ENABLE_SERIAL=ON -DCMAKE_INSTALL_PREFIX=../install -DCMAKE_BUILD_TYPE={build_type} -DKokkos_ENABLE_SHARED=OFF"
             if build_type == "Debug":
                 kokkos_cmake_cmd += " -DKokkos_ENABLE_DEBUG=ON -DKokkos_ENABLE_DEBUG_BOUNDS_CHECK=ON -DKokkos_ENABLE_DEBUG_DUALVIEW_MODIFY_CHECK=ON"
             if cuda_enabled:
