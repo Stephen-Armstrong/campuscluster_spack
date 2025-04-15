@@ -107,7 +107,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
             build_script = f"""
 module purge
 module use {top_level_dir}/modulefiles
-module load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
+module --ignore_cache load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
 
 cd builds
 mkdir {dir_name}
@@ -123,6 +123,7 @@ export CARGO_HOME=$PWD/cargo
 export RUSTUP_HOME=$PWD/multirust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 source $CARGO_HOME/env
+cd {top_level_dir}/builds/{dir_name}
 
 # install hypre
 # TODO build cuda-aware hypre when cuda enabled
@@ -300,7 +301,7 @@ setenv HDF5_ROOT {{{build_dir_path}/hdf5_dev/install}}
         build_script = f"""
 module purge
 module use {top_level_dir}/modulefiles
-module load {deps_module}
+module --ignore_cache load {deps_module}
 
 cd builds
 mkdir {dir_name}
