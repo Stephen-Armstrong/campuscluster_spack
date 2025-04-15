@@ -9,6 +9,8 @@ import numpy as np
 
 def update():
     top_level_dir = os.getcwd()
+    os.chdir(top_level_dir)
+    
     if not os.path.isdir("builds"):
         os.mkdir("builds")
     if not os.path.isdir("modulefiles"):
