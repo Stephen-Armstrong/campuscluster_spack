@@ -1,5 +1,5 @@
 cd ..
-module load python/3
+module load python/3.13.2
 git clone -c feature.manyFiles=true https://github.com/spack/spack.git
 . spack/share/spack/setup-env.sh
 cd -

@@ -19,8 +19,8 @@ os.chdir(top_level_dir)
 #New modules
 compiler_module = "gcc/13.3.0"
 mpi_module = "openmpi/5.0.1-gcc-13.3.0"
-cuda_module = "cuda/12.6"
-python_module = "python/3.11.11"
+cuda_module = "cuda/12.8"
+python_module = "python/3.13.2"
 
 # ICC can use as many cores as we want if run in slurm
 num_build_cores = len(os.sched_getaffinity(0)) #4
