@@ -8,7 +8,7 @@
 from spack import *
 
 
-class hpic2deps(BundlePackage):
+class Hpic2deps(BundlePackage):
     """Loads up dependencies for hpic2 so that developers can easily build."""
 
 
