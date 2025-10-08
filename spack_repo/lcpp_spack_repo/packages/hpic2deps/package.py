@@ -6,6 +6,7 @@
 # ----------------------------------------------------------------------------
 
 from spack import *
+from spack_repo import *
 
 
 class Hpic2deps(BundlePackage):
