@@ -5,10 +5,16 @@ Scripts for installing modules useful for LCPP codes and developers on the Illin
 Usage:
 ```bash
 mkdir share && cd share
-git clone git@github.com:Stephen-Armstrong/campuscluster_spack.git
+git clone https://github.com/Stephen-Armstrong/campuscluster_spack.git 
 cd campuscluster_spack
 . setup.sh
 ```
+
+Alternative Git Clone command:
+```bash
+git clone git@github.com:Stephen-Armstrong/campuscluster_spack.git
+```
+
 This will download Spack and then use Spack to install a bunch of packages,
 which are then added to the module list.
 
