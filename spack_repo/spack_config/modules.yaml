@@ -11,12 +11,12 @@ modules:
           - 'gcc'
         environment:
           prepend_path:
-            LD_LIBRARY_PATH: '/usr/local/gcc/13.3.0/lib/gcc/x86_64-pc-linux-gnu/13.3.0:/usr/local/gcc/13.3.0/lib64:/usr/local/gcc/13.3.0/lib'
-            LIBRARY_PATH: '/usr/local/gcc/13.3.0/lib64:/usr/local/gcc/13.3.0/lib'
-            MANPATH: '/usr/local/gcc/13.3.0/share/man'
-            PATH: '/usr/local/gcc/13.3.0/bin'
+            LD_LIBRARY_PATH: '/sw/apps/gcc/13.3.0/lib/gcc/x86_64-pc-linux-gnu/13.3.0:/sw/apps/gcc/13.3.0/lib64:/sw/apps/gcc/13.3.0/lib'
+            LIBRARY_PATH: '/sw/apps/gcc/13.3.0/lib64:/sw/apps/gcc/13.3.0/lib'
+            MANPATH: '/sw/apps/gcc/13.3.0/share/man'
+            PATH: '/sw/apps/gcc/13.3.0/bin'
           append_path:
-            LD_LIBRARY_PATH: '/usr/local/mpc/1.0.3/lib:/usr/local/mpfr/4.2.1/lib:/usr/local/gmp/6.3.0/lib:/usr/local/isl/0.18/lib'
+            LD_LIBRARY_PATH: '/sw/apps/mpc/1.0.3/lib:/sw/apps/mpfr/4.2.1/lib:/sw/apps/gmp/6.3.0/lib:/sw/apps/isl/0.18/lib'
           set:
             CC: 'gcc'
             F95: 'gfortran'
