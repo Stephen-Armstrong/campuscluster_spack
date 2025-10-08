@@ -53,7 +53,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
     compiler_module = "gcc/13.3.0"# intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4"
     mpi_module = "openmpi/5.0.1-gcc-13.3.0"
     cuda_module = "cuda/12.6" #11.6
-    python_module = "python/3.11.11"
+    python_module = "python/3.13.2"
     cmake_module = f"{top_level_dir}/modulefiles/cmake"
 
     # ICC currently restricts compiling to a certain number of cores
@@ -67,7 +67,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
     datetime_format_length = 10
     current_datetime = current_datetime.strftime(datetime_format)
 
-    openmp_options = [True]#, False]
+    openmp_options = [True, False]
     cuda_arch_options = [None, 70, 86, 90]
     for openmp_option, cuda_arch_option in itertools.product(openmp_options, cuda_arch_options):
         option_spec_string = f"{'+' if openmp_option else '~'}openmp-cuda-arch-{str(cuda_arch_option)}"
