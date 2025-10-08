@@ -28,15 +28,15 @@ python_module = "anaconda/3"
 #Intel compiler may not be needed, but in the event that cmake doesn't work, the intel compiler can generate an basic +omp-cuda build.
 compiler_module = "gcc/13.3.0"# intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4"
 mpi_module = "openmpi/5.0.1-gcc-13.3.0"
-cuda_module = "cuda/12.6" #11.6
-python_module = "python/3.11.11"
+cuda_module = "cuda/12.8" #11.6
+python_module = "python/3.13.2"
 
 # ICC currently restricts compiling to a certain number of cores
 num_build_cores = len(os.sched_getaffinity(0)) #4
 # Delete old versions of builds if the number exceeds this
 num_versions_kept = 3
 #Module Compile options for OpenMP and CUDA
-openmp_options = [True]#, False]
+openmp_options = [True, False] # [True, False]
 cuda_arch_options = [None, 70, 80, 86, 90]
 
 #Don't edit the following lines for normal operations
