@@ -3,7 +3,7 @@ module load python/3.13.2
 git clone -c feature.manyFiles=true https://github.com/spack/spack.git
 . spack/share/spack/setup-env.sh
 cd -
-cp spack_config/* ../spack/etc/spack/.
+cp spack_repo/spack_config/* ../spack/etc/spack/.
 echo "repos:" > ../spack/etc/spack/repos.yaml
 echo "- $PWD/spack_repo/lcpp-spack-repo" >> ../spack/etc/spack/repos.yaml
 # Remove user-level compiler list. They are almost definitely broken.
