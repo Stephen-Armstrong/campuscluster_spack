@@ -1,7 +1,7 @@
 modules:
   default:
-    enable: [tcl]
-    tcl:
+    enable: [lmod]
+    lmod:
       #blacklist_implicits: true
       hash_length: 0
       hpic2deps:
