@@ -5,7 +5,7 @@ git clone -c feature.manyFiles=true https://github.com/spack/spack.git
 cd -
 cp spack_repo/spack_config/* ../spack/etc/spack/.
 echo "repos:" > ../spack/etc/spack/repos.yaml
-echo "- $PWD/spack_repo/lcpp-spack-repo" >> ../spack/etc/spack/repos.yaml
+echo "- $PWD/spack_repo/lcpp_spack_repo" >> ../spack/etc/spack/repos.yaml
 # Remove user-level compiler list. They are almost definitely broken.
 rm ~/.spack/linux/compilers.yaml
 sh install_hpic2deps.sh
