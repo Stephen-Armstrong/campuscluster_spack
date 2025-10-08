@@ -5,8 +5,12 @@
 
 # ----------------------------------------------------------------------------
 
-from spack import *
-from spack_repo import *
+#from spack import *
+#from spack_repo import *
+
+from spack_repo.builtin.build_systems.bundle import BundlePackage
+from spack.package import *
+
 
 
 class Hpic2deps(BundlePackage):
@@ -18,7 +22,7 @@ class Hpic2deps(BundlePackage):
 
 
     # notify when the package is updated.
-    maintainers = ['logantm2', 'sda3']
+    maintainers('logantm2', 'Stephen-Armstrong')
 
     
     version('main')
