@@ -52,20 +52,20 @@ compilers:
 - compiler:
     modules: [gcc/12.4.0]
     paths:
-      cc: /usr/local/gcc/12.4.0/bin/gcc
-      cxx: /usr/local/gcc/12.4.0/bin/g++
-      f77: /usr/local/gcc/12.4.0/bin/gfortran
-      fc: /usr/local/gcc/12.4.0/bin/gfortran
+      cc: /sw/apps/gcc/12.4.0/bin/gcc
+      cxx: /sw/apps/gcc/12.4.0/bin/g++
+      f77: /sw/apps/gcc/12.4.0/bin/gfortran
+      fc: /sw/apps/gcc/12.4.0/bin/gfortran
     spec: gcc@=12.4.0
     target: x86_64
     operating_system: rhel9
 - compiler:
     modules: [gcc/13.3.0]
     paths:
-      cc: /usr/local/gcc/13.3.0/bin/gcc
-      cxx: /usr/local/gcc/13.3.0/bin/g++
-      f77: /usr/local/gcc/13.3.0/bin/gfortran
-      fc: /usr/local/gcc/13.3.0/bin/gfortran
+      cc: /sw/apps/gcc/13.3.0/bin/gcc
+      cxx: /sw/apps/gcc/13.3.0/bin/g++
+      f77: /sw/apps/gcc/13.3.0/bin/gfortran
+      fc: /sw/apps/gcc/13.3.0/bin/gfortran
     spec: gcc@=13.3.0
     target: x86_64
     operating_system: rhel9
