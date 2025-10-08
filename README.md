@@ -7,6 +7,7 @@ Usage:
 mkdir share && cd share
 git clone https://github.com/Stephen-Armstrong/campuscluster_spack.git 
 cd campuscluster_spack
+python3 campus_cluster_update_2.py # Or whichever one is actually working now
 . setup.sh
 ```
 
