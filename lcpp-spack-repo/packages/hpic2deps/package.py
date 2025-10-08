@@ -17,14 +17,14 @@ class Hpic2deps(BundlePackage):
 
 
     # notify when the package is updated.
-    maintainers = ['logantm2']
+    maintainers = ['logantm2', 'sda3']
 
     
     version('main')
 
     depends_on('mpi')
-    depends_on('cmake@3.19.8:')
-    depends_on('kokkos@:3.8')
+    depends_on('cmake@3.26.5:')
+    depends_on('kokkos@:4.7.00')
     depends_on('spdlog')
     depends_on('hypre')
     depends_on('googletest')
