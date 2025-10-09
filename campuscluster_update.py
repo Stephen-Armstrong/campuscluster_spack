@@ -12,7 +12,7 @@ import numpy as np
 # This is mostly because only one combo works on ICC at a time...
 compiler_module = "gcc/13.3.0"# intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4"
 mpi_module = "openmpi/5.0.1-gcc-13.3.0"
-cuda_module = "cuda/12.6" #11.6
+cuda_module = "cuda/12.8" #11.6
 python_module = "python/3.13.2"
 
 openmp_options = [False] #[True, False]
