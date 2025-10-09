@@ -30,11 +30,11 @@ def update():
     # ICC's cmake modules are broken and stupid so build our own.
     if not os.path.isdir("cmake"):
         cmake_build_script = f"""
-module --ignore_cache load {compiler_module}
+module --ignore_cache load {compiler_module} {mpi_module} {cuda_module}
 echo CMAKE Original CC compiler $CC C++ $CXX Fortran $FC
-export CC='which gcc'
-export CXX='which g++'
-export FC='which gfortran'
+export CC=`which gcc`
+export CXX=`which g++`
+export FC=`which gfortran`
 echo CMAKE Changed CC compiler $CC C++ $CXX Fortran $FC
 
 mkdir cmake && cd cmake
@@ -122,9 +122,9 @@ module purge
 module use {top_level_dir}/modulefiles
 module --ignore_cache load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
 echo Build Script Original CC compiler $CC C++ $CXX Fortran $FC
-export CC='which gcc'
-export CXX='which g++'
-export FC='which gfortran'
+export CC=`which gcc`
+export CXX=`which g++`
+export FC=`which gfortran`
 echo Build Script Changed CC compiler $CC C++ $CXX Fortran $FC
 
 cd builds
