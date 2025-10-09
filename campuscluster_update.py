@@ -31,6 +31,10 @@ def update():
     if not os.path.isdir("cmake"):
         cmake_build_script = f"""
 module --ignore_cache load {compiler_module}
+export CC='which gcc'
+export CXX='which g++'
+export FC='which gfortran'
+
 mkdir cmake && cd cmake
 mkdir install
 wget https://github.com/Kitware/CMake/releases/download/v3.26.5/cmake-3.26.5-linux-x86_64.sh
@@ -115,6 +119,9 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
 module purge
 module use {top_level_dir}/modulefiles
 module --ignore_cache load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
+export CC='which gcc'
+export CXX='which g++'
+export FC='which gfortran'
 
 cd builds
 mkdir {dir_name}
