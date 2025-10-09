@@ -31,7 +31,7 @@ def update():
     if not os.path.isdir("cmake"):
         cmake_build_script = f"""
 module --ignore_cache load {compiler_module}
-echo 'CMAKE Original CC compiler $CC C++ $CXX Fortran $FC'
+echo CMAKE Original CC compiler $CC C++ $CXX Fortran $FC
 export CC='which gcc'
 export CXX='which g++'
 export FC='which gfortran'
