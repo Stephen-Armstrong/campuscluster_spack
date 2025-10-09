@@ -35,6 +35,7 @@ echo CMAKE Original CC compiler $CC C++ $CXX Fortran $FC
 export CC='which gcc'
 export CXX='which g++'
 export FC='which gfortran'
+echo CMAKE Changed CC compiler $CC C++ $CXX Fortran $FC
 
 mkdir cmake && cd cmake
 mkdir install
@@ -120,10 +121,11 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
 module purge
 module use {top_level_dir}/modulefiles
 module --ignore_cache load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
-echo 'Build Script Original CC compiler $CC C++ $CXX Fortran $FC'
+echo Build Script Original CC compiler $CC C++ $CXX Fortran $FC
 export CC='which gcc'
 export CXX='which g++'
 export FC='which gfortran'
+echo Build Script Changed CC compiler $CC C++ $CXX Fortran $FC
 
 cd builds
 mkdir {dir_name}
