@@ -7,6 +7,17 @@ import shutil
 import glob
 import numpy as np
 
+
+# Only support one compiler/MPI/CUDA combo at a time.
+# This is mostly because only one combo works on ICC at a time...
+compiler_module = "gcc/13.3.0"# intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4"
+mpi_module = "openmpi/5.0.1-gcc-13.3.0"
+cuda_module = "cuda/12.6" #11.6
+python_module = "python/3.13.2"
+
+openmp_options = [False] #[True, False]
+cuda_arch_options = [None] #[None, 70, 86, 90]
+
 def update():
     top_level_dir = os.getcwd()
     os.chdir(top_level_dir)
@@ -19,6 +30,7 @@ def update():
     # ICC's cmake modules are broken and stupid so build our own.
     if not os.path.isdir("cmake"):
         cmake_build_script = f"""
+module --ignore_cache load {compiler_module}
 mkdir cmake && cd cmake
 mkdir install
 wget https://github.com/Kitware/CMake/releases/download/v3.26.5/cmake-3.26.5-linux-x86_64.sh
@@ -50,10 +62,6 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
 
     # Only support one compiler/MPI/CUDA combo at a time.
     # This is mostly because only one combo works on ICC at a time...
-    compiler_module = "gcc/13.3.0"# intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4"
-    mpi_module = "openmpi/5.0.1-gcc-13.3.0"
-    cuda_module = "cuda/12.6" #11.6
-    python_module = "python/3.13.2"
     cmake_module = f"{top_level_dir}/modulefiles/cmake"
 
     # ICC currently restricts compiling to a certain number of cores
@@ -67,8 +75,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
     datetime_format_length = 10
     current_datetime = current_datetime.strftime(datetime_format)
 
-    openmp_options = [True, False]
-    cuda_arch_options = [None, 70, 86, 90]
+    
     for openmp_option, cuda_arch_option in itertools.product(openmp_options, cuda_arch_options):
         option_spec_string = f"{'+' if openmp_option else '~'}openmp-cuda-arch-{str(cuda_arch_option)}"
         # Want to build both Debug and Release versions of hpic2deps,
