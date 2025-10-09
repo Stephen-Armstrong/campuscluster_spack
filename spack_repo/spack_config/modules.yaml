@@ -19,6 +19,7 @@ modules:
             LD_LIBRARY_PATH: '/sw/apps/mpc/1.0.3/lib:/sw/apps/mpfr/4.2.1/lib:/sw/apps/gmp/6.3.0/lib:/sw/apps/isl/0.18/lib'
           set:
             CC: '/sw/apps/gcc/13.3.0/bin/gcc'
+            CXX: '/sw/apps/gcc/13.3.0/bin/g++'
             F95: '/sw/apps/gcc/13.3.0/bin/gfortran'
       all:
         conflict:
