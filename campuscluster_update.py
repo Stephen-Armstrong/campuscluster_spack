@@ -7,7 +7,6 @@ import shutil
 import glob
 import numpy as np
 
-
 # Only support one compiler/MPI/CUDA combo at a time.
 # This is mostly because only one combo works on ICC at a time...
 compiler_module = "gcc/13.3.0"# intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4"
@@ -120,7 +119,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
                 mfem_cmake_cmd += f" -DMFEM_USE_OPENMP=YES"
 
             build_script = f"""
-#module purge
+# module purge
 module use {top_level_dir}/modulefiles
 module --ignore_cache load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
 echo Build Script Original CC compiler $CC C++ $CXX Fortran $FC mpicc `which mpicc` mpicxx `which mpicxx` mpif90 `which mpif90`
@@ -222,7 +221,7 @@ make install
 cd {top_level_dir}/builds/{dir_name}
             """
 
-            subprocess.run(build_script, shell=True, executable='/usr/bin/bash')
+            subprocess.run(build_script, shell=True)
 
             build_dir_path = f"{top_level_dir}/builds/{dir_name}"
 
