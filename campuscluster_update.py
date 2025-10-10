@@ -118,7 +118,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
                 mfem_cmake_cmd += f" -DMFEM_USE_OPENMP=YES"
 
             build_script = f"""
-module purge
+#module purge
 module use {top_level_dir}/modulefiles
 module --ignore_cache load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
 echo Build Script Original CC compiler $CC C++ $CXX Fortran $FC mpicc `which mpicc` mpicxx `which mpicxx` mpif90 `which mpif90`
