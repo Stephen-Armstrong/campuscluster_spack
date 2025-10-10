@@ -31,11 +31,11 @@ def update():
     if not os.path.isdir("cmake"):
         cmake_build_script = f"""
 module --ignore_cache load {compiler_module} {mpi_module} {cuda_module}
-echo CMAKE Original CC compiler $CC C++ $CXX Fortran $FC
+echo CMAKE Original CC compiler $CC C++ $CXX Fortran $FC mpicc `which mpicc` mpicxx `which mpicxx` mpif90 `which mpif90`
 export CC=`which gcc`
 export CXX=`which g++`
 export FC=`which gfortran`
-echo CMAKE Changed CC compiler $CC C++ $CXX Fortran $FC
+echo CMAKE Changed CC compiler $CC C++ $CXX Fortran $FC mpicc `which mpicc` mpicxx `which mpicxx` mpif90 `which mpif90`
 
 mkdir cmake && cd cmake
 mkdir install
@@ -121,11 +121,11 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
 module purge
 module use {top_level_dir}/modulefiles
 module --ignore_cache load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
-echo Build Script Original CC compiler $CC C++ $CXX Fortran $FC
+echo Build Script Original CC compiler $CC C++ $CXX Fortran $FC mpicc `which mpicc` mpicxx `which mpicxx` mpif90 `which mpif90`
 export CC=`which gcc`
 export CXX=`which g++`
 export FC=`which gfortran`
-echo Build Script Changed CC compiler $CC C++ $CXX Fortran $FC
+echo Build Script Changed CC compiler $CC C++ $CXX Fortran $FC mpicc `which mpicc` mpicxx `which mpicxx` mpif90 `which mpif90`
 
 cd builds
 mkdir {dir_name}
