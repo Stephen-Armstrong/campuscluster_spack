@@ -38,10 +38,10 @@ cuda_arch_options = [None] #[None, 70, 86, 90]
 build_types = ["Debug"]
 
 def update():
-    module('load', compiler_module)
-    module('load', mpi_module)
-    module('load', python_module)
-    
+    module('load', compiler_module, show_environ_updates=True)
+    module('load', mpi_module, show_environ_updates=True)
+    module('load', python_module, show_environ_updates=True)
+
     print("Initial Module List:")
     print(module('list'))
     
@@ -153,7 +153,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
                 module('unload', cuda_module)
             
             module('use', f'{top_level_dir}/modulefiles')
-            module('--ignore_cache load', cmake_module)
+            module('--ignore_cache', 'load', cmake_module)
             print("Build Script Module List:")
             print(module('list'))
             build_script = f"""
@@ -357,7 +357,7 @@ setenv HDF5_ROOT {{{build_dir_path}/hdf5_dev/install}}
 
         module('purge')
         module('use', f'{top_level_dir}/modulefiles')
-        module('--ignore_cache load', deps_module)
+        module('--ignore_cache', 'load', deps_module)
         print("Build Script HPIC2 Module List:")
         print(module('list'))
         
