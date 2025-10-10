@@ -357,7 +357,7 @@ setenv HDF5_ROOT {{{build_dir_path}/hdf5_dev/install}}
 
         module('purge')
         module('use', f'{top_level_dir}/modulefiles')
-        module('load', {deps_module})
+        module('load', deps_module)
         print("Build Script HPIC2 Module List:")
         print(module('list'))
         
