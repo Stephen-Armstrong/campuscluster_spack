@@ -319,7 +319,7 @@ setenv HDF5_ROOT {{{build_dir_path}/hdf5_dev/install}}
         deps_module = f"hpic2deps/{option_spec_string}/Release/latest"
 
         build_script = f"""
-module purge
+#module purge
 module use {top_level_dir}/modulefiles
 module --ignore_cache load {deps_module}
 
