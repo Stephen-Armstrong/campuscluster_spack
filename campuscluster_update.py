@@ -54,7 +54,7 @@ def update():
         os.mkdir("modulefiles")
 
     # ICC's cmake modules are broken and stupid so build our own.
-    if not os.path.isdir("cmake") or not os.path.exists('modulefiles/cmake'):
+    if not os.path.isdir("cmake") or not os.path.exists(f'{top_level_dir}/modulefiles/cmake'):
         cmake_build_script = f"""
 # module --ignore_cache load {compiler_module} {mpi_module} {cuda_module}
 echo CMAKE Original CC compiler $CC C++ $CXX Fortran $FC mpicc `which mpicc` mpicxx `which mpicxx` mpif90 `which mpif90`
@@ -121,7 +121,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
         # ("Debug", "Release")
         for build_type in build_types:
             dir_name = f"hpic2deps-{option_spec_string}-{build_type}-{current_datetime}"
-
+            print(f"Building hpic2deps {build_type} version at {dir_name}")
             # Remove the build directories for this datetime if it already
             # exists, i.e. if we have already updated today.
             if os.path.exists(f"builds/{dir_name}"):
