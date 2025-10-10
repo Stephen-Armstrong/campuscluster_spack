@@ -221,7 +221,7 @@ mkdir build && cd build
 {kokkos_cmake_cmd}
 make -j{num_build_cores}
 make install
-export Kokkos_DIR=$PWD/../install/lib64/cmake/Kokkos/
+# export Kokkos_DIR=$PWD/../install/lib64/cmake/Kokkos/
 cd {top_level_dir}/builds/{dir_name}
 
 # install metis 5
@@ -246,6 +246,8 @@ cd {top_level_dir}/builds/{dir_name}
 mkdir pumiMBBL_dev && cd pumiMBBL_dev
 git clone https://github.com/SCOREC/pumiMBBL.git #git@github.com:SCOREC/pumiMBBL.git
 mkdir build && cd build
+export kk=$KOKKOS_ROOT # PumiMBBL looks here instead of KOKKOS_ROOT for some reason
+export CMAKE_PREFIX_PATH=$kk/lib64/cmake/Kokkos:$CMAKE_PREFIX_PATH
 cmake ../pumiMBBL -DCMAKE_INSTALL_PREFIX=../install -DKokkos_ROOT=../../kokkos_dev/install -DCMAKE_BUILD_TYPE={build_type}
 make -j{num_build_cores}
 make install
@@ -311,7 +313,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/spdlog_dev/insta
 prepend-path --delim {{:}} PATH {{{build_dir_path}/kokkos_dev/install/bin/}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/kokkos_dev/install/.}}
 setenv KOKKOS_ROOT {{{build_dir_path}/kokkos_dev/install}}
-setenv Kokkos_DIR {{{build_dir_path}/kokkos_dev/install/lib64/cmake/Kokkos/}}
+setenv kk {{{build_dir_path}/kokkos_dev/install}} # for PumiMBBL
 prepend-path --delim {{:}} PATH {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install/bin}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install/.}}
 setenv METIS_ROOT {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install}}
