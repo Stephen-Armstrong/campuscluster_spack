@@ -330,7 +330,7 @@ cd {dir_name}
 git clone --recurse-submodules https://github.com/lcpp-org/hpic2.git #git@github.com:lcpp-org/hpic2.git
 mkdir build && cd build
 #cmake ../hpic2 -DWITH_RUSTBCA=ON -DWITH_PUMIMBBL=ON -DWITH_MFEM=ON
-cmake ../hpic2 -DWITH_RUSTBCA=ON -DWITH_PUMIMBBL=ON
+cmake ../hpic2 -DWITH_RUSTBCA=ON -DWITH_MFEM=ON
 make -j{num_build_cores}
 
         """
