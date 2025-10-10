@@ -113,6 +113,8 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
     
     for openmp_option, cuda_arch_option in itertools.product(openmp_options, cuda_arch_options):
         option_spec_string = f"{'+' if openmp_option else '~'}openmp-cuda-arch-{str(cuda_arch_option)}"
+        option_spec_string = '' + option_spec_string
+        print(f"Building hpic2deps with options {option_spec_string}")
         # Want to build both Debug and Release versions of hpic2deps,
         # but only the Release version of hpic2 itself.
         # First, hpic2deps
