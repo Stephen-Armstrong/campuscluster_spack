@@ -221,7 +221,7 @@ mkdir build && cd build
 {kokkos_cmake_cmd}
 make -j{num_build_cores}
 make install
-# export Kokkos_DIR=$PWD/../install/lib64/cmake/Kokkos/
+export Kokkos_DIR=$PWD/../install/lib64/cmake/Kokkos/
 cd {top_level_dir}/builds/{dir_name}
 
 # install metis 5
@@ -314,6 +314,7 @@ prepend-path --delim {{:}} PATH {{{build_dir_path}/kokkos_dev/install/bin/}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/kokkos_dev/install/.}}
 setenv KOKKOS_ROOT {{{build_dir_path}/kokkos_dev/install}}
 setenv kk {{{build_dir_path}/kokkos_dev/install}} # for PumiMBBL
+setenv Kokkos_DIR {{{build_dir_path}/kokkos_dev/install}} # for PumiMBBL
 prepend-path --delim {{:}} PATH {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install/bin}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install/.}}
 setenv METIS_ROOT {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install}}
