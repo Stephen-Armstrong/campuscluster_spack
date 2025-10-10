@@ -1,24 +1,31 @@
-import datetime
-import sys
-import subprocess
-import itertools
 import os
+import sys
 import shutil
+import subprocess
+import datetime
+import itertools
 import glob
 import numpy as np
 
-def load_module(module_name, *, capture_output=True, check=True, **kw):
-    module_home = os.environ["MODULESHOME"]
-    modulecmd = os.path.join(module_home, "bin/module")
-    process = subprocess.run(
-        [modulecmd, "python", "load", module_name],
-        capture_output=capture_output,
-        check=check,
-        **kw,
-    )
-    return process
-# Load the module system so we can use it in this script.
-# This is based on https://stackoverflow.com/questions/3387693/can-i-use-environment-modules-in-a-python-script
+import os
+import sys
+MODULES_HOME = os.environ["MODULESHOME"]
+if MODULES_HOME not in sys.path:
+    sys.path.insert(0, MODULES_HOME)
+    for root, dirs, files in os.walk(MODULES_HOME):
+        root_append = root + "/"
+        #print(root_append)
+        sys.path.insert(0, root_append)
+#print(sys.path)
+
+# LMOD specific version of the above stuff. 
+#LMOD_PATH = os.environ["LMOD_DIR"]
+#LMOD_NEW_PATH = LMOD_PATH + "/../init/"
+#sys.path.insert(0, LMOD_NEW_PATH)
+
+from env_modules_python import module # type: ignore # Only will show up as a thing on systems with Lmod installed.
+
+
 # Only support one compiler/MPI/CUDA combo at a time.
 # This is mostly because only one combo works on ICC at a time...
 compiler_module = "gcc/13.3.0"# intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4"
@@ -31,11 +38,10 @@ cuda_arch_options = [None] #[None, 70, 86, 90]
 build_types = ["Debug"]
 
 def update():
-    load_module(compiler_module)
-    load_module(mpi_module)
-    load_module(python_module)
-    load_module(cuda_module)
-    
+    module('load', compiler_module)
+    module('load', mpi_module)
+    module('load', python_module)
+
     top_level_dir = os.getcwd()
     os.chdir(top_level_dir)
     
@@ -47,7 +53,7 @@ def update():
     # ICC's cmake modules are broken and stupid so build our own.
     if not os.path.isdir("cmake"):
         cmake_build_script = f"""
-module --ignore_cache load {compiler_module} {mpi_module} {cuda_module}
+# module --ignore_cache load {compiler_module} {mpi_module} {cuda_module}
 echo CMAKE Original CC compiler $CC C++ $CXX Fortran $FC mpicc `which mpicc` mpicxx `which mpicxx` mpif90 `which mpif90`
 export CC=`which gcc`
 export CXX=`which g++`
@@ -135,10 +141,17 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
             elif openmp_option:
                 mfem_cmake_cmd += f" -DMFEM_USE_OPENMP=YES"
 
+            if cuda_enabled:
+                module('load', cuda_module)
+            else:
+                module('unload', cuda_module)
+            
+            module('use', '{top_level_dir}/modulefiles')
+            module('load', cmake_module)
             build_script = f"""
 # module purge
-module use {top_level_dir}/modulefiles
-module --ignore_cache load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
+# module use {top_level_dir}/modulefiles
+# module --ignore_cache load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
 echo Build Script Original CC compiler $CC C++ $CXX Fortran $FC mpicc `which mpicc` mpicxx `which mpicxx` mpif90 `which mpif90`
 export CC=`which gcc`
 export CXX=`which g++`
@@ -334,10 +347,14 @@ setenv HDF5_ROOT {{{build_dir_path}/hdf5_dev/install}}
 
         deps_module = f"hpic2deps/{option_spec_string}/Release/latest"
 
+        module('purge')
+        module('use', '{top_level_dir}/modulefiles')
+        module('load', {deps_module})
+
         build_script = f"""
-#module purge
-module use {top_level_dir}/modulefiles
-module --ignore_cache load {deps_module}
+# module purge
+# module use {top_level_dir}/modulefiles
+# module --ignore_cache load {deps_module}
 
 cd builds
 mkdir {dir_name}
