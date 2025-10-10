@@ -152,7 +152,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
             else:
                 module('unload', cuda_module)
             
-            module('use', '{top_level_dir}/modulefiles')
+            module('use', f'{top_level_dir}/modulefiles')
             module('load', cmake_module)
             print("Build Script Module List:")
             print(module('list'))
@@ -356,7 +356,7 @@ setenv HDF5_ROOT {{{build_dir_path}/hdf5_dev/install}}
         deps_module = f"hpic2deps/{option_spec_string}/Release/latest"
 
         module('purge')
-        module('use', '{top_level_dir}/modulefiles')
+        module('use', f'{top_level_dir}/modulefiles')
         module('load', {deps_module})
         print("Build Script HPIC2 Module List:")
         print(module('list'))
