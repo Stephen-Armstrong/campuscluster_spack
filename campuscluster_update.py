@@ -17,6 +17,7 @@ python_module = "python/3.13.2"
 
 openmp_options = [False] #[True, False]
 cuda_arch_options = [None] #[None, 70, 86, 90]
+build_types = ["Debug"]
 
 def update():
     top_level_dir = os.getcwd()
@@ -87,7 +88,8 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
         # Want to build both Debug and Release versions of hpic2deps,
         # but only the Release version of hpic2 itself.
         # First, hpic2deps
-        for build_type in ("Debug", "Release"):
+        # ("Debug", "Release")
+        for build_type in build_types:
             dir_name = f"hpic2deps-{option_spec_string}-{build_type}-{current_datetime}"
 
             # Remove the build directories for this datetime if it already
@@ -214,7 +216,7 @@ cd {top_level_dir}/builds/{dir_name}
 mkdir hdf5_dev && cd hdf5_dev
 git clone https://github.com/HDFGroup/hdf5.git #git@github.com:HDFGroup/hdf5.git
 mkdir build && cd build
-cmake ../hdf5 -DCMAKE_BUILD_TYPE={build_type} -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_ENABLE_PARALLEL=ON -DHDF5_BUILD_CPP_LIB=ON -DALLOW_UNSUPPORTED=ON -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
+cmake ../hdf5 -DCMAKE_BUILD_TYPE={build_type} -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_ENABLE_PARALLEL=ON -DHDF5_BUILD_CPP_LIB=ON -DHDF5_ALLOW_UNSUPPORTED=ON -DCMAKE_INSTALL_PREFIX=../install -DBUILD_TESTING=OFF
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
