@@ -220,7 +220,7 @@ make install
 cd {top_level_dir}/builds/{dir_name}
             """
 
-            subprocess.run(build_script, shell=True)
+            subprocess.run(build_script, shell=True, executable='/usr/bin/bash')
 
             build_dir_path = f"{top_level_dir}/builds/{dir_name}"
 
