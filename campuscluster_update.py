@@ -47,6 +47,8 @@ def update():
     
     top_level_dir = os.getcwd()
     os.chdir(top_level_dir)
+    print("Top Level Directory:", top_level_dir)
+    print("Current Directory:", os.getcwd())
     
     if not os.path.isdir("builds"):
         os.mkdir("builds")
