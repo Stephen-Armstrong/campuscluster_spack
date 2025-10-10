@@ -35,7 +35,7 @@ python_module = "python/3.13.2"
 
 openmp_options = [False] #[True, False]
 cuda_arch_options = [None] #[None, 70, 86, 90]
-build_types = ["Debug"]
+build_types = ["Debug", "Release"] #["Debug", "Release"]
 
 def update():
     module('load', compiler_module, show_environ_updates=True)
@@ -356,7 +356,7 @@ setenv HDF5_ROOT {{{build_dir_path}/hdf5_dev/install}}
             shutil.rmtree(f"builds/{dir_name}")
 
         deps_module = f"hpic2deps/{option_spec_string}/Release/latest"
-
+        
         module('purge')
         module('use', f'{top_level_dir}/modulefiles')
         module('--ignore_cache', 'load', deps_module)
