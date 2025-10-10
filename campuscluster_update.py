@@ -221,6 +221,7 @@ mkdir build && cd build
 {kokkos_cmake_cmd}
 make -j{num_build_cores}
 make install
+export Kokkos_DIR=$PWD/../install/lib64/cmake/Kokkos/
 cd {top_level_dir}/builds/{dir_name}
 
 # install metis 5
@@ -307,9 +308,10 @@ if {{![info exists ::env(LMOD_VERSION_MAJOR)]}} {{
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/hypre_dev/hypre/src/hypre/.}}
 setenv HYPRE_ROOT {{{build_dir_path}/hypre_dev/hypre/src/hypre}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/spdlog_dev/install/.}}
-prepend-path --delim {{:}} PATH {{{build_dir_path}/kokkos_dev/install/bin}}
+prepend-path --delim {{:}} PATH {{{build_dir_path}/kokkos_dev/install/bin/}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/kokkos_dev/install/.}}
 setenv KOKKOS_ROOT {{{build_dir_path}/kokkos_dev/install}}
+setenv Kokkos_DIR {{{build_dir_path}/kokkos_dev/install/lib64/cmake/Kokkos/}}
 prepend-path --delim {{:}} PATH {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install/bin}}
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install/.}}
 setenv METIS_ROOT {{{build_dir_path}/metis-5.1.0/build/Linux-x86_64/install}}
