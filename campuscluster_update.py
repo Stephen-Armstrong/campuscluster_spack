@@ -101,7 +101,7 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
             os.mkdir(f'{top_level_dir}/modulefiles/cmake')
         if not os.path.exists(f"{top_level_dir}/modulefiles/cmake/{cmake_version}"):
             os.mkdir(f"{top_level_dir}/modulefiles/cmake/{cmake_version}")
-        with open(f"{top_level_dir}/modulefiles/cmake/{cmake_version}", 'w') as cmake_modulefile:
+        with open(f"{top_level_dir}/modulefiles/cmake/{cmake_version}/cmake", 'w') as cmake_modulefile:
             cmake_modulefile.write(cmake_modulefile_contents)
 
     # Only support one compiler/MPI/CUDA combo at a time.
