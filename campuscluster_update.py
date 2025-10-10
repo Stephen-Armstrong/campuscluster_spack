@@ -32,10 +32,14 @@ compiler_module = "gcc/13.3.0"# intel/tbb intel/compiler-rt intel/umf intel/comp
 mpi_module = "openmpi/5.0.1-gcc-13.3.0"
 cuda_module = "cuda/12.8" #11.6
 python_module = "python/3.13.2"
+cmake_version = "3.26.5"
 
 openmp_options = [False] #[True, False]
 cuda_arch_options = [None] #[None, 70, 86, 90]
 build_types = ["Debug", "Release"] #["Debug", "Release"]
+
+
+cmake_module = f"cmake/{cmake_version}"
 
 def update():
     module('load', compiler_module, show_environ_updates=True)
@@ -67,8 +71,8 @@ echo CMAKE Changed CC compiler $CC C++ $CXX Fortran $FC mpicc `which mpicc` mpic
 
 mkdir cmake && cd cmake
 mkdir install
-wget https://github.com/Kitware/CMake/releases/download/v3.26.5/cmake-3.26.5-linux-x86_64.sh
-sh cmake-3.26.5-linux-x86_64.sh --skip-license --exclude-subdir --prefix=install
+wget https://github.com/Kitware/CMake/releases/download/v{cmake_version}/cmake-{cmake_version}-linux-x86_64.sh
+sh cmake-{cmake_version}-linux-x86_64.sh --skip-license --exclude-subdir --prefix=install
 cd ..
         """
         print("Building CMake...")
@@ -93,13 +97,17 @@ prepend-path --delim {{:}} ACLOCAL_PATH {{{top_level_dir}/cmake/install/share/ac
 prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
 
         """
-
-        with open(f"{top_level_dir}/modulefiles/cmake", 'w') as cmake_modulefile:
+        if not os.path.exists(f'{top_level_dir}/modulefiles/cmake'):
+            os.mkdir(f'{top_level_dir}/modulefiles/cmake')
+        if not os.path.exists(f"{top_level_dir}/modulefiles/cmake/{cmake_version}"):
+            os.mkdir(f"{top_level_dir}/modulefiles/cmake/{cmake_version}")
+        with open(f"{top_level_dir}/modulefiles/cmake/{cmake_version}", 'w') as cmake_modulefile:
             cmake_modulefile.write(cmake_modulefile_contents)
 
     # Only support one compiler/MPI/CUDA combo at a time.
     # This is mostly because only one combo works on ICC at a time...
-    cmake_module = f"{top_level_dir}/modulefiles/cmake"
+    #cmake_module = f"{top_level_dir}/modulefiles/cmake"
+    # module load doesn't take direct paths, so put it in the modulefiles directory.
 
     # ICC currently restricts compiling to a certain number of cores
     num_build_cores = len(os.sched_getaffinity(0))
