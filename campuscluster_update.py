@@ -7,6 +7,18 @@ import shutil
 import glob
 import numpy as np
 
+def load_module(module_name, *, capture_output=True, check=True, **kw):
+    module_home = os.environ["MODULESHOME"]
+    modulecmd = os.path.join(module_home, "bin/modulecmd")
+    process = subprocess.run(
+        [modulecmd, "python", "load", module_name],
+        capture_output=capture_output,
+        check=check,
+        **kw,
+    )
+    return process
+# Load the module system so we can use it in this script.
+# This is based on https://stackoverflow.com/questions/3387693/can-i-use-environment-modules-in-a-python-script
 # Only support one compiler/MPI/CUDA combo at a time.
 # This is mostly because only one combo works on ICC at a time...
 compiler_module = "gcc/13.3.0"# intel/tbb intel/compiler-rt intel/umf intel/compiler/2025.0.4"
@@ -19,6 +31,11 @@ cuda_arch_options = [None] #[None, 70, 86, 90]
 build_types = ["Debug"]
 
 def update():
+    load_module(compiler_module)
+    load_module(mpi_module)
+    load_module(python_module)
+    load_module(cuda_module)
+    
     top_level_dir = os.getcwd()
     os.chdir(top_level_dir)
     
