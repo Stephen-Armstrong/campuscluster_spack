@@ -9,7 +9,7 @@ import numpy as np
 
 def load_module(module_name, *, capture_output=True, check=True, **kw):
     module_home = os.environ["MODULESHOME"]
-    modulecmd = os.path.join(module_home, "bin/modulecmd")
+    modulecmd = os.path.join(module_home, "bin/module")
     process = subprocess.run(
         [modulecmd, "python", "load", module_name],
         capture_output=capture_output,
