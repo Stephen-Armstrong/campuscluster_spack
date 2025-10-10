@@ -54,7 +54,7 @@ def update():
         os.mkdir("modulefiles")
 
     # ICC's cmake modules are broken and stupid so build our own.
-    if not os.path.isdir("cmake"):
+    if not os.path.isdir("cmake") or not os.path.exists('modulefiles/cmake'):
         cmake_build_script = f"""
 # module --ignore_cache load {compiler_module} {mpi_module} {cuda_module}
 echo CMAKE Original CC compiler $CC C++ $CXX Fortran $FC mpicc `which mpicc` mpicxx `which mpicxx` mpif90 `which mpif90`
