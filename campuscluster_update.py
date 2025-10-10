@@ -41,7 +41,10 @@ def update():
     module('load', compiler_module)
     module('load', mpi_module)
     module('load', python_module)
-
+    
+    print("Initial Module List:")
+    print(module('list'))
+    
     top_level_dir = os.getcwd()
     os.chdir(top_level_dir)
     
@@ -66,6 +69,9 @@ wget https://github.com/Kitware/CMake/releases/download/v3.26.5/cmake-3.26.5-lin
 sh cmake-3.26.5-linux-x86_64.sh --skip-license --exclude-subdir --prefix=install
 cd ..
         """
+        print("Building CMake...")
+        print("CMake Build Script:")
+        print(module('list'))
         subprocess.run(cmake_build_script, shell=True)
 
         cmake_modulefile_contents = f"""#%Module1.0
@@ -148,6 +154,8 @@ prepend-path --delim {{:}} CMAKE_PREFIX_PATH {{{top_level_dir}/cmake/install/.}}
             
             module('use', '{top_level_dir}/modulefiles')
             module('load', cmake_module)
+            print("Build Script Module List:")
+            print(module('list'))
             build_script = f"""
 # module purge
 # module use {top_level_dir}/modulefiles
@@ -350,7 +358,9 @@ setenv HDF5_ROOT {{{build_dir_path}/hdf5_dev/install}}
         module('purge')
         module('use', '{top_level_dir}/modulefiles')
         module('load', {deps_module})
-
+        print("Build Script HPIC2 Module List:")
+        print(module('list'))
+        
         build_script = f"""
 # module purge
 # module use {top_level_dir}/modulefiles
