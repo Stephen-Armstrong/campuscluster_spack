@@ -122,10 +122,9 @@ module purge
 module use {top_level_dir}/modulefiles
 module --ignore_cache load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
 echo Build Script Original CC compiler $CC C++ $CXX Fortran $FC
-export CC='' `which gcc`
-export CXX='' `which g++`
-export FC='' `which gfortran`
-module --ignore_cache load {compiler_module} {mpi_module} {cmake_module} {cuda_module if cuda_enabled else ''}
+export CC=`which gcc`
+export CXX=`which g++`
+export FC=`which gfortran`
 echo Build Script Changed CC compiler $CC C++ $CXX Fortran $FC
 
 cd builds
@@ -150,7 +149,7 @@ mkdir hypre_dev
 cd hypre_dev
 git clone https://github.com/hypre-space/hypre.git #git@github.com:hypre-space/hypre.git
 cd hypre/src
-./configure
+./configure 
 make -j{num_build_cores}
 make install
 cd {top_level_dir}/builds/{dir_name}
