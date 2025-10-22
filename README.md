@@ -7,7 +7,7 @@ Usage:
 mkdir share && cd share
 git clone https://github.com/Stephen-Armstrong/campuscluster_spack.git 
 cd campuscluster_spack
-python3 campus_cluster_update_2.py # Or whichever one is actually working now
+python3 campus_cluster_update_2.py # Or whichever one is actually working now # This might actually need to go in the setup.sh script before the call to install_hpic2deps. 
 . setup.sh
 ```
 
