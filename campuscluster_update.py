@@ -216,7 +216,7 @@ cd {top_level_dir}/builds/{dir_name}
 
 # install kokkos
 mkdir kokkos_dev && cd kokkos_dev
-git clone --branch 3.7.1 https://github.com/kokkos/kokkos.git #git@github.com:kokkos/kokkos.git
+git clone --branch release-candidate-3.7.02 https://github.com/kokkos/kokkos.git #git@github.com:kokkos/kokkos.git
 mkdir build && cd build
 {kokkos_cmake_cmd}
 make -j{num_build_cores}
